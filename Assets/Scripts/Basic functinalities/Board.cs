@@ -39,7 +39,7 @@ public class Board : MonoBehaviour
     public int width, offset, height;
 
     [Header("Prefabs")]
-    public GameObject explosionEffect, breakableTilePrefab, tilePrefab, lockTilePrefab;
+    public GameObject explosionEffect, breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab;
     public GameObject[] dots;// массив где будут храниться элементы игры матч 3
 
     [Header("Layout")]
@@ -48,6 +48,7 @@ public class Board : MonoBehaviour
     private FindMatches findMatches;
     private BackgroundTile[,] breakableTiles;
     public BackgroundTile[,] lockTiles;
+    public BackgroundTile[,] concreteTiles;
     public GameObject[,] allDots;
     public Dot currentDot;
     public TileType[] boardLayout;
@@ -88,6 +89,7 @@ public class Board : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         breakableTiles = new BackgroundTile[width, height];
         lockTiles = new BackgroundTile[width, height];
+        concreteTiles = new BackgroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
         //allTiles = new BackgroundTile[width, height]; // заполняем массив хранения плиток
         blankSpaces = new bool[width, height];
@@ -158,6 +160,20 @@ public class Board : MonoBehaviour
             }
         }
     }
+    private void GeneratConcreteTiles()
+    {
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            //если плитка является "ломаемой" плиткой
+            if (boardLayout[i].tileKind == TileKind.Concrete)
+            {
+                // Создать ломаемую плитку в данной позиции
+                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                GameObject tile = Instantiate(concreteTilePrefab, tempPosition, Quaternion.identity);
+                concreteTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+        }
+    }
 
     /*public void GenerateTypeTiles(GameObject PrefabOfTile, BackgroundTile[,] ListOfTiles) 
     {
@@ -177,12 +193,13 @@ public class Board : MonoBehaviour
         GeneratingBlankSpaces();
         GenerateBreakableTiles();
         GeneratLockTiles();
+        GeneratConcreteTiles();
         for (int i = 0; i < width; i++) 
         {
             // на каждую плитку по x мы генерируем все плитки по y
             for (int j = 0; j < height; j++) 
             {
-                if (!blankSpaces[i, j]) 
+                if (!blankSpaces[i, j] && !concreteTiles[i, j]) 
                 {
                     Vector2 tempPosition = new Vector2(i, j + offset); // определение позиции для плитки
                     Vector2 tilePosition = new Vector2(i, j);

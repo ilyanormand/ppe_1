@@ -92,7 +92,7 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(targetX - transform.position.x) > .1) // если позиция по X больше чем 0.1  то значет что свайп идет вправо или влево
         {
             tempPosition = new Vector2(targetX, transform.position.y); // создаем новый вектор куда будет направлено движение
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .1f); // Lerp создает плавное скольжение где .4f время скольжение 
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .15f); // Lerp создает плавное скольжение где .1f время скольжение 
             if (board.allDots[column, row] != this.gameObject)
             {
                 board.allDots[column, row] = this.gameObject;
@@ -108,7 +108,7 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(targetY - transform.position.y) > .1) // если позиция по y больше чем 0.1  то значет что свайп идет вверх или вних
         {
             tempPosition = new Vector2(transform.position.x, targetY); 
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .15f);
             if (board.allDots[column, row] != this.gameObject)
             {
                 board.allDots[column, row] = this.gameObject;

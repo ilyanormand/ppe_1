@@ -2315,6 +2315,8 @@ MonoBehaviour:
     type: 3}
   lockTilePrefab: {fileID: 1219787171442610108, guid: 7ec6db29525fac74b9c6dd0f2e64b02f,
     type: 3}
+  concreteTilePrefab: {fileID: 244668098841106250, guid: a6c7bfcf5ac84604b9882765e9fbe7b4,
+    type: 3}
   dots:
   - {fileID: 135722, guid: 48e2b867fa77df2489266abb9c52c1db, type: 3}
   - {fileID: 120900, guid: 28dd42fca7a476d478e583d0b8d8e192, type: 3}
@@ -2324,7 +2326,7 @@ MonoBehaviour:
   boardLayout: []
   basePieceScoreValue: 20
   streakValue: 20
-  refillDelay: 0.5
+  refillDelay: 0.1
   ScoreGoals: d0070000a00f000088130000
 --- !u!114 &1192980806
 MonoBehaviour:
