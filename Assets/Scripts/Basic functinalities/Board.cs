@@ -60,6 +60,7 @@ public class Board : MonoBehaviour
     private GoalManager goalManager;
     public float refillDelay;
     public int[] ScoreGoals;
+    private bool makeSlime = true;
 
     private void Awake()
     {
@@ -665,6 +666,7 @@ public class Board : MonoBehaviour
                 {
                     chocolateTiles[column - 1, row] = null;
                 }
+                makeSlime = false;
             }
         }
         if (column < width - 1)
@@ -676,6 +678,7 @@ public class Board : MonoBehaviour
                 {
                     chocolateTiles[column + 1, row] = null;
                 }
+                makeSlime = false;
             }
         }
         if (row > 0)
@@ -687,6 +690,7 @@ public class Board : MonoBehaviour
                 {
                     chocolateTiles[column, row - 1] = null;
                 }
+                makeSlime = false;
             }
         }
         if (row < height - 1)
@@ -698,6 +702,7 @@ public class Board : MonoBehaviour
                 {
                     chocolateTiles[column, row + 1] = null;
                 }
+                makeSlime = false;
             }
         }
     }
@@ -817,8 +822,24 @@ public class Board : MonoBehaviour
             ShuffleBoard();
             Debug.LogError("DeadLocked");
         }
+        makeSlime = true;
         currentState = GameState.move;
         streakValue = 1;
+    }
+
+    private void checkToMakeChoco() 
+    {
+        //check the chocolate tiles array
+        for (int i = 0; i < width; i++) 
+        {
+            for (int j = 0; j < height; j++) 
+            {
+                if (chocolateTiles[i, j] != null && makeSlime) 
+                {
+                    //call another method to make a new slime
+                }
+            }
+        }
     }
 
     private void SwitchPieces(int column, int row, Vector2 direction) // поменять элементы местами
