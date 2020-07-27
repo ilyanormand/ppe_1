@@ -524,6 +524,7 @@ public class Board : MonoBehaviour
                     lockTiles[column, row] = null;
                 }
             }
+            DamageConcrete(column, row);
 
             if (goalManager != null) 
             {
@@ -559,7 +560,53 @@ public class Board : MonoBehaviour
         StartCoroutine(DecreaseRowCo2());
     }
     // сдвиг элементов при уничтожение матча
-
+    private void DamageConcrete(int column, int row) 
+    {
+        if (column > 0) 
+        {
+            if (concreteTiles[column - 1, row]) 
+            {
+                concreteTiles[column - 1, row].TakeDamage(1);
+                if (concreteTiles[column - 1, row].hitPoints <= 0)
+                {
+                    concreteTiles[column - 1, row] = null;
+                }
+            }
+        }
+        if (column < width - 1)
+        {
+            if (concreteTiles[column + 1, row])
+            {
+                concreteTiles[column + 1, row].TakeDamage(1);
+                if (concreteTiles[column + 1 , row].hitPoints <= 0)
+                {
+                    concreteTiles[column + 1, row] = null;
+                }
+            }
+        }
+        if (row > 0)
+        {
+            if (concreteTiles[column, row - 1])
+            {
+                concreteTiles[column, row - 1].TakeDamage(1);
+                if (concreteTiles[column, row - 1].hitPoints <= 0)
+                {
+                    concreteTiles[column, row - 1] = null;
+                }
+            }
+        }
+        if (row < height - 1)
+        {
+            if (concreteTiles[column, row + 1])
+            {
+                concreteTiles[column, row + 1].TakeDamage(1);
+                if (concreteTiles[column, row + 1].hitPoints <= 0)
+                {
+                    concreteTiles[column, row + 1] = null;
+                }
+            }
+        }
+    }
     private IEnumerator DecreaseRowCo2() 
     {
         for (int i = 0; i < width; i++) 
@@ -567,7 +614,7 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 //Проверка на пустые плитки
-                if (!blankSpaces[i, j] && allDots[i, j] == null) 
+                if (!blankSpaces[i, j] && allDots[i, j] == null && !concreteTiles[i, j]) 
                 {
                     for (int k = j + 1; k < height; k++) 
                     {
@@ -616,7 +663,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++) 
             {
-                if (allDots[i, j] == null && !blankSpaces[i, j])  // элемент массива равен null то рандомно сгенироввать новый элемент
+                if (allDots[i, j] == null && !blankSpaces[i, j] && !concreteTiles[i, j])  // элемент массива равен null то рандомно сгенироввать новый элемент
                 {
                     Vector2 tempPosition = new Vector2(i, j + offset);
                     int dotToUse = Random.Range(0, dots.Length);
@@ -792,7 +839,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (!blankSpaces[i, j])
+                if (!blankSpaces[i, j] && !concreteTiles[i, j])
                 {
                     int pieceToUse = Random.Range(0, newBoard.Count);
                     // соддаем контейнер для элемента
