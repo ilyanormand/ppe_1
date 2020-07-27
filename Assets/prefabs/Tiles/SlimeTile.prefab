@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 317758998461886704}
   - component: {fileID: 8709200060253560362}
   - component: {fileID: 3454408992738844212}
+  - component: {fileID: 1738583604797216580}
   m_Layer: 0
   m_Name: SlimeTile
   m_TagString: Concrete
@@ -95,3 +96,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 1
+--- !u!95 &1738583604797216580
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068108184736583092}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 402e7a784e0bc114fae176504e741dc0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

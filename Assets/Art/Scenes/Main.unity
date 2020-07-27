@@ -2317,6 +2317,8 @@ MonoBehaviour:
     type: 3}
   concreteTilePrefab: {fileID: 244668098841106250, guid: a6c7bfcf5ac84604b9882765e9fbe7b4,
     type: 3}
+  chocolateTilePrefab: {fileID: 3068108184736583092, guid: df0980ae9a85bad46bc43b52df1b576d,
+    type: 3}
   dots:
   - {fileID: 135722, guid: 48e2b867fa77df2489266abb9c52c1db, type: 3}
   - {fileID: 120900, guid: 28dd42fca7a476d478e583d0b8d8e192, type: 3}
@@ -3295,31 +3297,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906253597}
   m_CullTransparentMesh: 0
---- !u!1 &1738583604797216579 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3068108184736583092, guid: df0980ae9a85bad46bc43b52df1b576d,
-    type: 3}
-  m_PrefabInstance: {fileID: 3653735072637442807}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1738583604797216580
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738583604797216579}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 402e7a784e0bc114fae176504e741dc0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3653735072637442807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3381,16 +3358,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 317758998461886704, guid: df0980ae9a85bad46bc43b52df1b576d,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 317758998461886704, guid: df0980ae9a85bad46bc43b52df1b576d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3068108184736583092, guid: df0980ae9a85bad46bc43b52df1b576d,
         type: 3}

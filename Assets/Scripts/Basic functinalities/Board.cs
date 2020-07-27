@@ -816,6 +816,7 @@ public class Board : MonoBehaviour
         }
         findMatches.currentMatches.Clear();
         currentDot = null;
+        checkToMakeChoco();
         yield return new WaitForSeconds(refillDelay);
         if (isDeadLocked()) 
         {
@@ -837,8 +838,56 @@ public class Board : MonoBehaviour
                 if (chocolateTiles[i, j] != null && makeSlime) 
                 {
                     //call another method to make a new slime
+                    MakeNewSlime();
                 }
             }
+        }
+    }
+
+    private Vector2 CheckForAdjacent(int column, int row) 
+    {
+        if (allDots[column + 1, row] && column < width - 1) 
+        {
+            return Vector2.right;
+        }
+        if (allDots[column - 1, row] && column > 0)
+        {
+            return Vector2.left;
+        }
+        if (allDots[column, row + 1] && row < height - 1)
+        {
+            return Vector2.up;
+        }
+        if (allDots[column, row - 1 ] && row < 0)
+        {
+            return Vector2.down;
+        }
+        return Vector2.zero;
+    }
+
+    private void MakeNewSlime() 
+    {
+        bool slime = false;
+        int maxIterations = 0;
+        while (!slime && maxIterations < 200)
+        {
+            int newX = Random.Range(0, width); // choose a random spot to spawn a slime coordinate x
+            int newY = Random.Range(0, height); // choose a random spot to spawn a slime coordinate y 
+
+            if (chocolateTiles[newX, newY]) // check if the random spot it the slime on the board 
+            {
+                Vector2 adjacent = CheckForAdjacent(newX, newY); // check if new position where we need to spawn it's not a slime tile or another type of tile
+                if (adjacent != Vector2.zero) 
+                {
+                    Destroy(allDots[newX + (int)adjacent.x, newY + (int)adjacent.y]); // destroy the fruit where we need to spawn a slime tile
+                    Vector2 tempPosition = new Vector2(newX + (int)adjacent.x, newY + (int)adjacent.y); // new postion of the spawn of slime tile
+                    GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity); // creatuing a new gameobject slime tile on the scene
+                    chocolateTiles[newX + (int)adjacent.x, newY + (int)adjacent.y] = tile.GetComponent<BackgroundTile>(); // adding new slime tile to the array of slime tiles
+                    slime = true;
+                }
+            }
+
+            maxIterations++;
         }
     }
 
