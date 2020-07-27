@@ -499,6 +499,14 @@ public class Board : MonoBehaviour
                     breakableTiles[column, row] = null;
                 }
             }
+            if (lockTiles[column, row] != null)
+            {
+                lockTiles[column, row].TakeDamage(1);
+                if (lockTiles[column, row].hitPoints <= 0)
+                {
+                    lockTiles[column, row] = null;
+                }
+            }
 
             if (goalManager != null) 
             {

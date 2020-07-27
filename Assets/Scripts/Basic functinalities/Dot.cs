@@ -41,6 +41,7 @@ public class Dot : MonoBehaviour
 
         //board = FindObjectOfType<Board>();// Находим таблицу на нашей сцене
         findMatches = FindObjectOfType<FindMatches>();
+ 
         //targetX = (int)transform.position.x; // координаты элемента таблицы по x преобразованные со float в integer
         //targetY = (int)transform.position.y; // координаты элемента таблицы по y преобразованные со float в integer
         //row = targetY;
@@ -79,6 +80,7 @@ public class Dot : MonoBehaviour
     }
     void Update()
     {
+        Debug.Log(board.currentState);
         if (isMatched) 
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
@@ -153,12 +155,10 @@ public class Dot : MonoBehaviour
     {
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         movePieces();
-        board.currentState = GameState.wait;
         board.currentDot = this;
         if (swipeAngle == 0) 
         {
             board.currentState = GameState.move;
-            
         }
     }
 
@@ -167,18 +167,28 @@ public class Dot : MonoBehaviour
         otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];//передвигает выбраный элемент
         previousColumn = column;
         previousRow = row;
-        if (otherDot != null)
+        if (board.lockTiles[column, row] == null && board.lockTiles[column + (int)direction.x, row + (int)direction.y] == null) // запрет на движение заблокировных элемнентов
         {
-            otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
-            otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
-            column += (int)direction.x;
-            row += (int)direction.y;
-            StartCoroutine(CheckMoveCo());// проверка на возврат элемента в исходную позицию
+            if (otherDot != null)
+            {
+                otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
+                otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
+                column += (int)direction.x;
+                row += (int)direction.y;
+                StartCoroutine(CheckMoveCo());// проверка на возврат элемента в исходную позицию
+            }
+            else
+            {
+                board.currentState = GameState.move;
+            }
         }
-        else 
+        else
         {
             board.currentState = GameState.move;
+            Debug.Log(board.currentState);
+            Debug.Log("Current stat теперь move");
         }
+
     }
 
     // Передвижение элементов
