@@ -49,16 +49,19 @@ public class FindMatches : MonoBehaviour
         if(dot1.isRowBomb)
                                 {
             currentMatches.Union(GetRowPieces(dot1.row));
+            board.BombRow(dot1.row);
         }
 
         if (dot2.isRowBomb)
         {
             currentMatches.Union(GetRowPieces(dot2.row));
+            board.BombRow(dot2.row);
         }
 
         if (dot3.isRowBomb)
         {
             currentMatches.Union(GetRowPieces(dot3.row));
+            board.BombRow(dot3.row);
         }
 
         return CurrentDots;
@@ -71,16 +74,19 @@ public class FindMatches : MonoBehaviour
         if (dot1.isColumnBomb)
         {
             currentMatches.Union(GetColumnPieces(dot1.column));
+            board.BombColumn(dot1.column);
         }
 
         if (dot2.isColumnBomb)
         {
             currentMatches.Union(GetColumnPieces(dot2.column));
+            board.BombColumn(dot2.column);
         }
 
         if (dot3.isColumnBomb)
         {
             currentMatches.Union(GetColumnPieces(dot3.column));
+            board.BombColumn(dot3.column);
         }
 
         return CurrentDots;

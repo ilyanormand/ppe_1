@@ -22,6 +22,10 @@ TagManager:
   - yellow2
   - Color
   - Board
+  - Concrete
+  - Chocolate
+  - breakable
+  - Lock
   layers:
   - Default
   - TransparentFX

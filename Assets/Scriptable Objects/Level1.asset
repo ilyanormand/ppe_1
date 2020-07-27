@@ -17,7 +17,7 @@ MonoBehaviour:
   boardLayout:
   - x: 4
     y: 4
-    tileKind: 2
+    tileKind: 3
   dots:
   - {fileID: 120900, guid: 28dd42fca7a476d478e583d0b8d8e192, type: 3}
   - {fileID: 125166, guid: 0fa72a843191b2e4c924dfe0c98fd45e, type: 3}
@@ -29,14 +29,14 @@ MonoBehaviour:
     counterValues: 20
   levelGoals:
   - numberNeeded: 10
-    numberCollected: 3
+    numberCollected: 1
     goalSprite: {fileID: 21300004, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1
   - numberNeeded: 10
-    numberCollected: 3
+    numberCollected: 1
     goalSprite: {fileID: 21300012, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1
   - numberNeeded: 10
-    numberCollected: 3
+    numberCollected: 1
     goalSprite: {fileID: 21300008, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1

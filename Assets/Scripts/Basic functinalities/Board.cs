@@ -496,6 +496,35 @@ public class Board : MonoBehaviour
         }*/
     }
     // уничтожение заматченых элементов
+    public void BombRow(int row) 
+    {
+        for (int i = 0; i < width; i++) 
+        {
+            if (concreteTiles[i, row]) 
+            {
+                concreteTiles[i, row].TakeDamage(1);
+                if (concreteTiles[i, row].hitPoints <= 0)
+                {
+                    concreteTiles[i, row] = null;
+                }
+            }
+        }
+    }
+
+    public void BombColumn(int column)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            if (concreteTiles[column, i])
+            {
+                concreteTiles[column, i].TakeDamage(1);
+                if (concreteTiles[column, i].hitPoints <= 0)
+                {
+                    concreteTiles[column, i] = null;
+                }
+            }
+        }
+    }
     private void DestroyMatchesAt(int column, int row) 
     {
         if (allDots[column, row].GetComponent<Dot>().isMatched) 
@@ -713,7 +742,7 @@ public class Board : MonoBehaviour
         {
             streakValue++;
             DestroyMatches();
-            yield return new WaitForSeconds(refillDelay * 2);
+            yield return new WaitForSeconds(refillDelay);
         }
         findMatches.currentMatches.Clear();
         currentDot = null;
@@ -729,11 +758,14 @@ public class Board : MonoBehaviour
 
     private void SwitchPieces(int column, int row, Vector2 direction) // поменять элементы местами
     {
-        //Взять второй элемент и сохранить его в холдер
-        GameObject holder = allDots[column + (int)direction.x, row + (int)direction.y] as GameObject;
-        
-        allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
-        allDots[column, row] = holder;
+        if (allDots[column + (int)direction.x, row + (int)direction.y] != null)
+        {
+            //Взять второй элемент и сохранить его в холдер
+            GameObject holder = allDots[column + (int)direction.x, row + (int)direction.y] as GameObject;
+
+            allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
+            allDots[column, row] = holder;
+        }
 
     }
 
