@@ -39,7 +39,7 @@ public class Board : MonoBehaviour
     public int width, offset, height;
 
     [Header("Prefabs")]
-    public GameObject explosionEffect, breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab;
+    public GameObject explosionEffect, breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
     public GameObject[] dots;// массив где будут храниться элементы игры матч 3
 
     [Header("Layout")]
@@ -49,6 +49,7 @@ public class Board : MonoBehaviour
     private BackgroundTile[,] breakableTiles;
     public BackgroundTile[,] lockTiles;
     public BackgroundTile[,] concreteTiles;
+    public BackgroundTile[,] chocolateTiles;
     public GameObject[,] allDots;
     public Dot currentDot;
     public TileType[] boardLayout;
@@ -90,6 +91,7 @@ public class Board : MonoBehaviour
         breakableTiles = new BackgroundTile[width, height];
         lockTiles = new BackgroundTile[width, height];
         concreteTiles = new BackgroundTile[width, height];
+        chocolateTiles = new BackgroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
         //allTiles = new BackgroundTile[width, height]; // заполняем массив хранения плиток
         blankSpaces = new bool[width, height];
@@ -175,6 +177,21 @@ public class Board : MonoBehaviour
         }
     }
 
+    private void GeneratChocolateTiles()
+    {
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            //если плитка является "ломаемой" плиткой
+            if (boardLayout[i].tileKind == TileKind.Chocolate)
+            {
+                // Создать ломаемую плитку в данной позиции
+                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity);
+                chocolateTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+        }
+    }
+
     /*public void GenerateTypeTiles(GameObject PrefabOfTile, BackgroundTile[,] ListOfTiles) 
     {
         for (int i = 0; i < boardLayout.Length; i++) 
@@ -194,12 +211,13 @@ public class Board : MonoBehaviour
         GenerateBreakableTiles();
         GeneratLockTiles();
         GeneratConcreteTiles();
+        GeneratChocolateTiles();
         for (int i = 0; i < width; i++) 
         {
             // на каждую плитку по x мы генерируем все плитки по y
             for (int j = 0; j < height; j++) 
             {
-                if (!blankSpaces[i, j] && !concreteTiles[i, j]) 
+                if (!blankSpaces[i, j] && !concreteTiles[i, j] && !chocolateTiles[i, j]) 
                 {
                     Vector2 tempPosition = new Vector2(i, j + offset); // определение позиции для плитки
                     Vector2 tilePosition = new Vector2(i, j);
@@ -554,7 +572,7 @@ public class Board : MonoBehaviour
                 }
             }
             DamageConcrete(column, row);
-
+            DamageChocolate(column, row);
             if (goalManager != null) 
             {
                 goalManager.ComparedGoal(allDots[column, row].tag.ToString());
@@ -636,14 +654,61 @@ public class Board : MonoBehaviour
             }
         }
     }
+    private void DamageChocolate(int column, int row)
+    {
+        if (column > 0)
+        {
+            if (chocolateTiles[column - 1, row])
+            {
+                chocolateTiles[column - 1, row].TakeDamage(1);
+                if (chocolateTiles[column - 1, row].hitPoints <= 0)
+                {
+                    chocolateTiles[column - 1, row] = null;
+                }
+            }
+        }
+        if (column < width - 1)
+        {
+            if (chocolateTiles[column + 1, row])
+            {
+                chocolateTiles[column + 1, row].TakeDamage(1);
+                if (chocolateTiles[column + 1, row].hitPoints <= 0)
+                {
+                    chocolateTiles[column + 1, row] = null;
+                }
+            }
+        }
+        if (row > 0)
+        {
+            if (chocolateTiles[column, row - 1])
+            {
+                chocolateTiles[column, row - 1].TakeDamage(1);
+                if (chocolateTiles[column, row - 1].hitPoints <= 0)
+                {
+                    chocolateTiles[column, row - 1] = null;
+                }
+            }
+        }
+        if (row < height - 1)
+        {
+            if (chocolateTiles[column, row + 1])
+            {
+                chocolateTiles[column, row + 1].TakeDamage(1);
+                if (chocolateTiles[column, row + 1].hitPoints <= 0)
+                {
+                    chocolateTiles[column, row + 1] = null;
+                }
+            }
+        }
+    }
     private IEnumerator DecreaseRowCo2() 
     {
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++)
             {
-                //Проверка на пустые плитки
-                if (!blankSpaces[i, j] && allDots[i, j] == null && !concreteTiles[i, j]) 
+                //Проверка на игровые плитки
+                if (!blankSpaces[i, j] && allDots[i, j] == null && !concreteTiles[i, j] && !chocolateTiles[i, j]) 
                 {
                     for (int k = j + 1; k < height; k++) 
                     {
@@ -692,7 +757,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++) 
             {
-                if (allDots[i, j] == null && !blankSpaces[i, j] && !concreteTiles[i, j])  // элемент массива равен null то рандомно сгенироввать новый элемент
+                if (allDots[i, j] == null && !blankSpaces[i, j] && !concreteTiles[i, j] && !chocolateTiles[i, j])  // элемент массива равен null то рандомно сгенироввать новый элемент
                 {
                     Vector2 tempPosition = new Vector2(i, j + offset);
                     int dotToUse = Random.Range(0, dots.Length);
@@ -871,7 +936,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (!blankSpaces[i, j] && !concreteTiles[i, j])
+                if (!blankSpaces[i, j] && !concreteTiles[i, j] && !chocolateTiles[i, j])
                 {
                     int pieceToUse = Random.Range(0, newBoard.Count);
                     // соддаем контейнер для элемента
