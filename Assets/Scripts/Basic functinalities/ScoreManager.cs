@@ -11,6 +11,7 @@ public class ScoreManager : MonoBehaviour
     public int score;
     public Image scoreBar;
     private GameData gameData;
+    private int numberStars;
     void Start()
     {
         board = FindObjectOfType<Board>();
@@ -26,6 +27,7 @@ public class ScoreManager : MonoBehaviour
     public void InreaseScore(int amountToIncrease) 
     {
         score += amountToIncrease;
+
         if (gameData != null) 
         {
             int highScore = gameData.saveData.highScores[board.level];

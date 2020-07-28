@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class GameStartManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject startPanel;
+    public GameObject levelPanel;
     void Start()
     {
-        
+        startPanel.SetActive(true);
+        levelPanel.SetActive(false);
     }
 
-    // Update is called once per frame
+    public void PlayGame() 
+    {
+        startPanel.SetActive(false);
+        levelPanel.SetActive(true);
+    }
+
+    public void Home() 
+    {
+        startPanel.SetActive(true);
+        levelPanel.SetActive(false);
+    }
+
     void Update()
     {
         
