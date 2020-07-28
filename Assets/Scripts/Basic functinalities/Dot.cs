@@ -80,7 +80,6 @@ public class Dot : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(board.currentState);
         if (isMatched) 
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
@@ -179,14 +178,12 @@ public class Dot : MonoBehaviour
             }
             else
             {
-                board.currentState = GameState.move;
+                //board.currentState = GameState.move;
             }
         }
         else
         {
-            board.currentState = GameState.move;
-            Debug.Log(board.currentState);
-            Debug.Log("Current stat теперь move");
+            //board.currentState = GameState.move;
         }
 
     }
@@ -217,9 +214,10 @@ public class Dot : MonoBehaviour
             //Свайп вниз
             movePiecesActual(Vector2.down);
         }
-        board.currentState = GameState.move;
-        
-
+        else 
+        {
+            board.currentState = GameState.move;
+        }
         
         
     }

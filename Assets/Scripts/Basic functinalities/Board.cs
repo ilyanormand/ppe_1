@@ -839,28 +839,42 @@ public class Board : MonoBehaviour
                 {
                     //call another method to make a new slime
                     MakeNewSlime();
+                    return;
                 }
             }
         }
+
     }
 
     private Vector2 CheckForAdjacent(int column, int row) 
     {
-        if (allDots[column + 1, row] && column < width - 1) 
+        if (column < width - 1)
         {
-            return Vector2.right;
+            if (allDots[column + 1, row])
+            {
+                return Vector2.right;
+            }
         }
-        if (allDots[column - 1, row] && column > 0)
+        if (column < 0)
         {
-            return Vector2.left;
+            if (allDots[column - 1, row])
+            {
+                return Vector2.left;
+            }
         }
-        if (allDots[column, row + 1] && row < height - 1)
+        if (row < height - 1)
         {
-            return Vector2.up;
+            if (allDots[column, row + 1])
+            {
+                return Vector2.up;
+            }
         }
-        if (allDots[column, row - 1 ] && row < 0)
+        if (row < 0)
         {
-            return Vector2.down;
+            if (allDots[column, row - 1])
+            {
+                return Vector2.down;
+            }
         }
         return Vector2.zero;
     }
@@ -869,7 +883,7 @@ public class Board : MonoBehaviour
     {
         bool slime = false;
         int maxIterations = 0;
-        while (!slime && maxIterations < 200)
+        while (!slime && maxIterations < 10000)
         {
             int newX = Random.Range(0, width); // choose a random spot to spawn a slime coordinate x
             int newY = Random.Range(0, height); // choose a random spot to spawn a slime coordinate y 
@@ -884,6 +898,7 @@ public class Board : MonoBehaviour
                     GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity); // creatuing a new gameobject slime tile on the scene
                     chocolateTiles[newX + (int)adjacent.x, newY + (int)adjacent.y] = tile.GetComponent<BackgroundTile>(); // adding new slime tile to the array of slime tiles
                     slime = true;
+                    
                 }
             }
 
