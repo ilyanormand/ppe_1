@@ -3607,6 +3607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyPieceSound:
   - {fileID: 709242453}
+  backcgroundMusic: {fileID: 1517593388}
 --- !u!1 &1869370522
 GameObject:
   m_ObjectHideFlags: 0
