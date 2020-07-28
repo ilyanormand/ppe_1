@@ -12,10 +12,14 @@ public class PauseManager : MonoBehaviour
     public Image soundButton;
     public Sprite musicOnSprite;
     public Sprite musicOffSprite;
+    private  SoundManager sound;
     void Start()
     {
         // in player prefs, the "sound" key is for sound
         // if sound == 0, then mute, if sound == 1, then unmute
+        sound = FindObjectOfType<SoundManager>();
+        board = GameObject.FindWithTag("Board").GetComponent<Board>();
+        pausePanel.SetActive(false);
         if (PlayerPrefs.HasKey("Sound")) // проверяет есть ли ключ sound в найстройках у игрока
         {
             if (PlayerPrefs.GetInt("Sound") == 0) // если значение ключа в настройках игрока равно 0 то
@@ -31,8 +35,7 @@ public class PauseManager : MonoBehaviour
         {
             soundButton.sprite = musicOnSprite; // если же не нашел ключ sound то оставляем включенным звук
         }
-        pausePanel.SetActive(false);
-        board = GameObject.FindWithTag("Board").GetComponent<Board>();
+        
     }
 
     // Update is called once per frame
@@ -56,19 +59,23 @@ public class PauseManager : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("Sound") == 0) // если значение ключа в настройках игрока равно 0 то
             {
-                soundButton.sprite = musicOnSprite; // меняем картинку выключеного звука на включеный звук
-                PlayerPrefs.SetInt("Sound", 1); // добавляем к нашуме ключу sound значение 1, что означает что звук включен
+                PlayerPrefs.SetInt("Sound", 1);// добавляем к нашуме ключу sound значение 1, что означает что звук включен
+                soundButton.sprite = musicOnSprite; // меняем картинку выключеного звука на включеный звук 
+                sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
             }
             else
             {
-                soundButton.sprite = musicOffSprite; // меняем картинку включеного звука на выключеный звук
                 PlayerPrefs.SetInt("Sound", 0); // добавляем к нашуме ключу sound значение 0, что означает что звук выключен
+                soundButton.sprite = musicOffSprite; // меняем картинку включеного звука на выключеный звук
+                sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
             }
         }
         else
         {
             soundButton.sprite = musicOnSprite; // если же не нашел ключ sound то оставляем звук выключеным
             PlayerPrefs.SetInt("Sound", 0);
+            sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
+
         }
     }
 
