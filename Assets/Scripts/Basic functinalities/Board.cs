@@ -823,8 +823,11 @@ public class Board : MonoBehaviour
             ShuffleBoard();
             Debug.LogError("DeadLocked");
         }
+        if (currentState != GameState.pause) 
+        {
+            currentState = GameState.move;
+        }
         makeSlime = true;
-        currentState = GameState.move;
         streakValue = 1;
     }
 
