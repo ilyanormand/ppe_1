@@ -29,14 +29,14 @@ MonoBehaviour:
   - {fileID: 151478, guid: 26017852f58bdfe4584111c080628521, type: 3}
   scoreGoals: e8030000b80b0000a00f0000
   endGameRequierments:
-    gameType: 1
+    gameType: 0
     counterValues: 60
   levelGoals:
   - numberNeeded: 10
-    numberCollected: 0
+    numberCollected: 10
     goalSprite: {fileID: 21300004, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1
-  - numberNeeded: 100
-    numberCollected: 9
+  - numberNeeded: 10
+    numberCollected: 10
     goalSprite: {fileID: 21300008, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: blue1
