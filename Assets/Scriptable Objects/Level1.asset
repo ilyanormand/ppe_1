@@ -17,26 +17,18 @@ MonoBehaviour:
   boardLayout:
   - x: 4
     y: 4
-    tileKind: 4
+    tileKind: 0
   dots:
   - {fileID: 120900, guid: 28dd42fca7a476d478e583d0b8d8e192, type: 3}
   - {fileID: 125166, guid: 0fa72a843191b2e4c924dfe0c98fd45e, type: 3}
   - {fileID: 101480, guid: 858a256717922b94c8c31524c3075d55, type: 3}
   - {fileID: 151478, guid: 26017852f58bdfe4584111c080628521, type: 3}
-  scoreGoals: 640000009001000058020000
+  scoreGoals: f401000020030000e8030000
   endGameRequierments:
     gameType: 0
     counterValues: 20
   levelGoals:
   - numberNeeded: 10
-    numberCollected: 1
+    numberCollected: 12
     goalSprite: {fileID: 21300004, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
-    matchValue: green1
-  - numberNeeded: 10
-    numberCollected: 1
-    goalSprite: {fileID: 21300012, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
-    matchValue: green1
-  - numberNeeded: 10
-    numberCollected: 1
-    goalSprite: {fileID: 21300008, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1

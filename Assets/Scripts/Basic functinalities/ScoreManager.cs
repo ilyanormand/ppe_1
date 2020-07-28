@@ -27,13 +27,30 @@ public class ScoreManager : MonoBehaviour
     public void InreaseScore(int amountToIncrease) 
     {
         score += amountToIncrease;
+        //звезды
+        for (int i = 0; i < board.ScoreGoals.Length; i++) 
+        {
+            if (score > board.ScoreGoals[i] && numberStars < i + 1) // если количество очков больше чем цель очков и при этом количество звезд не превышает макс число звезд то
+            {
+                numberStars++; // добавляем звезду
+            }
+        }
 
+        //сохранение очков
         if (gameData != null) 
         {
             int highScore = gameData.saveData.highScores[board.level];
             if (score > highScore) 
             {
                 gameData.saveData.highScores[board.level] = score;
+                //gameData.saveData.stars[board.level] = numberStars;
+            }
+
+            int currentStars = gameData.saveData.stars[board.level];
+            if (numberStars > currentStars) 
+            {
+                gameData.saveData.stars[board.level] = numberStars;
+                gameData.Save();
             }
             gameData.Save();   
         }
@@ -45,3 +62,4 @@ public class ScoreManager : MonoBehaviour
         }
     }
 }
+

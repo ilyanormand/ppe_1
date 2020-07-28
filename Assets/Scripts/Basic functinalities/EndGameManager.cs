@@ -78,7 +78,7 @@ public class EndGameManager : MonoBehaviour
 
     public void WinGame() 
     {
-       WinPanel.SetActive(true);
+        WinPanel.SetActive(true);
         board.currentState = GameState.wait;
         currentCounterValue = 0;
         counter.text = "" + currentCounterValue;
