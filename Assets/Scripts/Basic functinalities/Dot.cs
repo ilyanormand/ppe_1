@@ -28,6 +28,9 @@ public class Dot : MonoBehaviour
     [Header("Бустеры")]
     public bool isColumnBomb, isRowBomb, isColorBomb, isAdjacentBomb;
     public GameObject AdjacentMarker, rowArrow, columnArrow, colorBomb;
+
+    [Header("Для тестов")]
+    public GameObject fruit;
     void Start()
     {
         endGameManager = FindObjectOfType<EndGameManager>();
@@ -54,18 +57,19 @@ public class Dot : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(1))
+        /*if (Input.GetMouseButtonDown(1))
         {
             isRowBomb = true;
             GameObject marker = Instantiate(rowArrow, transform.position, Quaternion.identity);
             marker.transform.parent = this.transform;
-        }
+        }*/
         /*if (Input.GetMouseButtonDown(1))
         {
             isColorBomb = true;
             GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
             color.transform.parent = this.transform;
         }*/
+
     }
 
     // Update is called once per frame
@@ -332,49 +336,65 @@ public class Dot : MonoBehaviour
 
     public void MakeRowBomb() 
     {
-        if (!isColumnBomb && !colorBomb && !isAdjacentBomb) 
+        Debug.Log("isColumnBomb = " + isColumnBomb);
+        Debug.Log("isColorBomb = " + isColorBomb);
+        Debug.Log("isAdjacentBomb = " + isAdjacentBomb);
+        if (isColumnBomb == false && isColorBomb == false && isAdjacentBomb == false)
         {
-            isRowBomb = true;
+            Debug.Log("Starting Function MakeRowBomb");
             board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
+            isRowBomb = true;
+        }
+        else 
+        {
+            Debug.Log("Already a bomb");
         }
         
     }
 
     public void MakeColumnBomb()
     {
-        if (!isRowBomb && !colorBomb && !isAdjacentBomb) 
+        Debug.Log("isRowBomb = " + isRowBomb);
+        Debug.Log("isColorBomb = " + isColorBomb);
+        Debug.Log("isAdjacentBomb = " + isAdjacentBomb);
+        if (isRowBomb == false && isColorBomb == false && isAdjacentBomb == false) 
         {
-            isColumnBomb = true;
+            Debug.Log("Starting Function MakeColumnBomb");
             board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
+            isColumnBomb = true;
         }
-        
+        else
+        {
+            Debug.Log("Already a bomb");
+        }
+
     }
 
     public void MakeColorBomb()
     {
-        if (!isColumnBomb && !isRowBomb && !isAdjacentBomb) 
+        if (isColumnBomb == false && isRowBomb == false && isAdjacentBomb == false) 
         {
-            isColorBomb = true;
             board.debugLog("Make Color bomb", "");
             GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
             color.transform.parent = this.transform;
             this.gameObject.tag = "Color";
+            isColorBomb = true;
         }
         
     }
 
     public void AdjacentBomb()
     {
-        if (!isColumnBomb && !isRowBomb && !isColorBomb) 
+        if (isColumnBomb == false && isRowBomb == false && isColorBomb == false) 
         {
-            isAdjacentBomb = true;
             board.debugLog("Make adjacent bomb", "");
             GameObject marker = Instantiate(AdjacentMarker, transform.position, Quaternion.identity);
             marker.transform.parent = this.transform;
+            isAdjacentBomb = true;
         }
         
     }

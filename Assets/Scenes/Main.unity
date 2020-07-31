@@ -2509,7 +2509,7 @@ MonoBehaviour:
   streakValue: 20
   refillDelay: 0.1
   ScoreGoals: d0070000a00f000088130000
-  debug: 1
+  debug: 0
 --- !u!114 &1192980806
 MonoBehaviour:
   m_ObjectHideFlags: 0

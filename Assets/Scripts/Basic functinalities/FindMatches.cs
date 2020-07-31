@@ -118,7 +118,7 @@ public class FindMatches : MonoBehaviour
     {
         board.debugLog("FindAllMatchesCo()", "------------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
-        yield return new WaitForSeconds(.2f); // пауза 0,2 секунды
+        yield return new WaitForSeconds(.1f); // пауза 0,2 секунды
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 
@@ -269,28 +269,28 @@ public class FindMatches : MonoBehaviour
     {
         board.debugLog("CheckBombs()", "-------------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
+        Debug.Log("CheckBombs()");
         // проверка на то что двигал ли что то игрок
         if (board.currentDot != null) 
         {
             // проверка на то что двигаемый элемент заматченый
-            if (board.currentDot.isMatched)
+            board.currentDot.isMatched = false;
+            //выбрать какую бомбу сделать
+            int typeOfBomb = Random.Range(0, 100);
+            if (typeOfBomb < 50)
             {
-                board.currentDot.isMatched = false;
-                //выбрать какую бомбу сделать
-                int typeOfBomb = Random.Range(0, 100);
-                if (typeOfBomb < 50)
-                {
-                    // сделать бомбу которая взрывает горизонтальный ряд
-                    board.currentDot.MakeRowBomb();
-                }
-                else if (typeOfBomb >= 50)
-                {
-                    // сделать бомбу которая взрывает вертикальный ряд
-                    board.currentDot.MakeColumnBomb();
-                }
+                // сделать бомбу которая взрывает горизонтальный ряд
+                Debug.Log("We will create a row bomb");
+                board.currentDot.MakeRowBomb();
+            }
+            else if (typeOfBomb >= 50)
+            {
+                Debug.Log("We will create a column bomb");
+                // сделать бомбу которая взрывает вертикальный ряд
+                board.currentDot.MakeColumnBomb();
             }
             // проверка на то что другой элемент заматчен
-            else if (board.currentDot.otherDot != null) 
+            /*else if (board.currentDot.otherDot != null) 
             {
                 Dot otherDot = board.currentDot.otherDot.GetComponent<Dot>();
                 //проверка на матч другой кнопки на которую мы меняем
@@ -310,7 +310,7 @@ public class FindMatches : MonoBehaviour
                         otherDot.MakeColumnBomb();
                     }
                 }
-            }
+            }*/
         }
         board.debugLog("GameState = " + board.currentState.ToString(), "---------------");
     }

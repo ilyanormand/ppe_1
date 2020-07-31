@@ -340,7 +340,6 @@ public class Board : MonoBehaviour
         //Делаем коипю нынешних матчей
         List<GameObject> matchCopy = findMatches.currentMatches as List<GameObject>;
         debugLog("Сделали матч копию, начало ColumnOrRow", "");
-        Debug.Log(matchCopy);
         // Cycle through all of match copy and decide if a bomb needs to be made
         // Проверяем все матчи и смотрим должен ли сгенерироватсья бустер
         for (int i = 0; i < matchCopy.Count; i++) 
@@ -376,19 +375,24 @@ public class Board : MonoBehaviour
             //return 1 if color bomb
             if (columnMatch == 4 || rowMatch == 4) 
             {
-                debugLog("В колонке или ряде при матче 4 элемента", columnMatch.ToString());
+                debugLog("В колонке или ряде при матче 5 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
                 return 1;
             }
-            if (columnMatch == 2 || rowMatch == 2)
+            if (columnMatch == 2 && rowMatch == 2)
             {
-                debugLog("В колонке или ряде при матче 2 элемента", columnMatch.ToString());
+                debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
+                debugLog("", rowMatch.ToString());
+                return 2;
+            }else if (columnMatch == 5 || rowMatch == 5)
+            {
+                debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
                 return 2;
             }
             if (columnMatch == 3 || rowMatch == 3) 
             {
-                debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
+                debugLog("В колонке или ряде при матче 4 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
                 return 3;
             }
@@ -509,7 +513,7 @@ public class Board : MonoBehaviour
             }
             else if (typeOfMatch == 3) 
             {
-                debugLog("Создание бомбы не требуется", "");
+                Debug.Log("TypeOfMatch = 3, create a column/row bomb");
                 findMatches.ChekcBombs();
                 debugLog("Запуск CheckBombs", "---------------");
             }
@@ -816,7 +820,7 @@ public class Board : MonoBehaviour
             }
         }
         debugLog("Ожидание:" + refillDelay.ToString(), "");
-        yield return new WaitForSeconds(refillDelay * 0.5f);
+        yield return new WaitForSeconds(0.001f);
         StartCoroutine(FillBoardCo());
     }
     private IEnumerator DecreaseRowCo() 
@@ -905,6 +909,7 @@ public class Board : MonoBehaviour
         {
             debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
             streakValue++;
+            yield return new WaitForSeconds(.7f);
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay);
         }

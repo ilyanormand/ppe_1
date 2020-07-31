@@ -214,6 +214,7 @@ MonoBehaviour:
     type: 3}
   colorBomb: {fileID: 2504147426516361097, guid: 900bfb81bc1a7da4982a0908ac901d49,
     type: 3}
+  fruit: {fileID: 135722, guid: 48e2b867fa77df2489266abb9c52c1db, type: 3}
 --- !u!1 &101482
 GameObject:
   m_ObjectHideFlags: 0
