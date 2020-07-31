@@ -30,9 +30,9 @@ MonoBehaviour:
   scoreGoals: e8030000b80b0000a00f0000
   endGameRequierments:
     gameType: 0
-    counterValues: 60
+    counterValues: 600
   levelGoals:
-  - numberNeeded: 10
+  - numberNeeded: 1000
     numberCollected: 10
     goalSprite: {fileID: 21300004, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1

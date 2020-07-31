@@ -8,13 +8,14 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject pausePanel;
     private Board board;
-    public bool paused = false;
+    public bool paused;
     public Image soundButton;
     public Sprite musicOnSprite;
     public Sprite musicOffSprite;
     private  SoundManager sound;
     void Start()
     {
+        paused = false;
         // in player prefs, the "sound" key is for sound
         // if sound == 0, then mute, if sound == 1, then unmute
         sound = FindObjectOfType<SoundManager>();
@@ -41,12 +42,12 @@ public class PauseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (paused && !pausePanel.activeInHierarchy) // если paused = true и панель паузы не активна то 
+        if (!pausePanel.activeInHierarchy && paused) // если paused = true и панель паузы не активна то 
         {
             pausePanel.SetActive(true); // показать панель паузы
             board.currentState = GameState.pause; // переключить режим игра на режим паузы
         }
-        if (!paused && pausePanel.activeInHierarchy) // если игра не на паузе и панель паузы активна то
+        if (pausePanel.activeInHierarchy && !paused) // если игра не на паузе и панель паузы активна то
         {
             pausePanel.SetActive(false); // выключить панель паузы
             board.currentState = GameState.move; // переключить режим игры на игровой режим

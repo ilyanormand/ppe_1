@@ -71,21 +71,28 @@ public class Dot : MonoBehaviour
     // Update is called once per frame
     private IEnumerator DestroyFirstMatches() 
     {
-        if (board != null) 
+        board.debugLog("Запуск функции уничтожение первых матчей", "---------------");
+        if (board.currentState == GameState.move)
         {
-            yield return new WaitForSeconds(1.5f);
-            board.DestroyMatches();
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
+            if (board != null)
+            {
+                yield return new WaitForSeconds(1.5f);
+                board.DestroyMatches();
+                board.debugLog("Матчи были уничтожены", "");
+            }
         }
-        
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
     }
+
     void Update()
     {
         if (isMatched) 
         {
+            board.debugLog("isMatched = " + isMatched.ToString(), "");
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             StartCoroutine(DestroyFirstMatches());
         }
-
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1) // если позиция по X больше чем 0.1  то значет что свайп идет вправо или влево
@@ -152,17 +159,21 @@ public class Dot : MonoBehaviour
 
     void CalculateAngle() 
     {
+        board.debugLog("CalculateAngle()", "----------");
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         movePieces();
         board.currentDot = this;
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         if (swipeAngle == 0) 
         {
             board.currentState = GameState.move;
+            board.debugLog("GameState = " + board.currentState.ToString(), "----------");
         }
     }
 
     void movePiecesActual(Vector2 direction) 
     {
+        board.debugLog("MovePiecesActual()", "");
         otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];//передвигает выбраный элемент
         previousColumn = column;
         previousRow = row;
@@ -191,32 +202,37 @@ public class Dot : MonoBehaviour
     // Передвижение элементов
     void movePieces()
     {
-        Debug.Log(board.currentState);
+        board.debugLog("MovePieces()", "------------");
         board.currentState = GameState.wait;
-        Debug.Log(board.currentState);
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1 && swipeAngle != 0)
         {
             //Правый свайп
-            movePiecesActual(Vector2.right);
+            movePiecesActual(Vector2.right); // Vector2(1, 0) передвижение элемента вправо на 1 единицу по оси x
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1 && swipeAngle != 0)
         {
             //Вверхний свайп
             movePiecesActual(Vector2.up);
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0 && swipeAngle != 0)
         {
             //Левый свайп
             movePiecesActual(Vector2.left);
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0 && swipeAngle != 0)
         {
             //Свайп вниз
             movePiecesActual(Vector2.down);
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         else 
         {
             board.currentState = GameState.move;
+            board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         
         
@@ -225,11 +241,14 @@ public class Dot : MonoBehaviour
     // если нету матчей то функция возращает элемент в пердыдущию позицию
     public IEnumerator CheckMoveCo() 
     {
+        board.debugLog("CheckMoveCo()","------------");
         if (isColorBomb)
         {
+            board.debugLog("isColorBomb = " + isColorBomb.ToString(), "");
             //этот элемент это молния, а другой элемент это элемент который нужно уничтожить
             findMatches.MatchPiecesOfColors(otherDot.tag);
             isMatched = true;
+            board.debugLog("isMatched = " + isMatched.ToString(), "");
         } else if (otherDot.GetComponent<Dot>().isColorBomb) 
         {
             //этот элемент это элемент который нужно уничтожить, а другой элемент это молния
@@ -239,6 +258,7 @@ public class Dot : MonoBehaviour
         yield return new WaitForSeconds(.5f); // пауза 
         if (otherDot != null)
         {
+            board.debugLog("isMatched = " + isMatched.ToString(), "");
             if (!isMatched && !otherDot.GetComponent<Dot>().isMatched) // если нету матчей то элементы в исходыне позиции
             {
                 otherDot.GetComponent<Dot>().row = row;
@@ -248,17 +268,21 @@ public class Dot : MonoBehaviour
                 yield return new WaitForSeconds(.5f);
                 board.currentDot = null;
                 board.currentState = GameState.move;
+                board.debugLog("GameState = " + board.currentState.ToString(), "-------------------");
             }
             else
             {
+                board.debugLog("GameState = " + board.currentState.ToString(), "");
                 if (endGameManager != null) 
                 {
                     if (endGameManager.requierments.gameType == GameType.Moves) 
                     {
                         endGameManager.DecreaseCounterValue();
+                        board.debugLog("GameState = " + board.currentState.ToString(), "");
                     }
                 }
-                board.DestroyMatches(); // уничтожить заматченые элементы     
+                board.DestroyMatches(); // уничтожить заматченые элементы   
+                board.debugLog("GameState = " + board.currentState.ToString(), "-----------------");
             }
             //otherDot = null;
         }
@@ -269,7 +293,8 @@ public class Dot : MonoBehaviour
     // Нахождение матчей
     void FindMatches() 
     {
-        if (column > 0 && column < board.width - 1) 
+        board.debugLog("FindMatches(), dot script", "");
+        if (column > 0 && column < board.width - 1) // если 
         {
             GameObject leftDot1 = board.allDots[column - 1, row]; // находим элемент слева 
             GameObject rightDot1 = board.allDots[column + 1, row]; // находим элемент справа
@@ -281,6 +306,7 @@ public class Dot : MonoBehaviour
                     leftDot1.GetComponent<Dot>().isMatched = true;
                     rightDot1.GetComponent<Dot>().isMatched = true;
                     isMatched = true;
+                    board.debugLog("isMatched = " + isMatched.ToString(), "");
                 }
             }
             
@@ -297,6 +323,7 @@ public class Dot : MonoBehaviour
                     upDot1.GetComponent<Dot>().isMatched = true;
                     downDot1.GetComponent<Dot>().isMatched = true;
                     isMatched = true;
+                    board.debugLog("isMatched = " + isMatched.ToString(), "");
                 }
             }
             
@@ -308,6 +335,7 @@ public class Dot : MonoBehaviour
         if (!isColumnBomb && !colorBomb && !isAdjacentBomb) 
         {
             isRowBomb = true;
+            board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
         }
@@ -319,6 +347,7 @@ public class Dot : MonoBehaviour
         if (!isRowBomb && !colorBomb && !isAdjacentBomb) 
         {
             isColumnBomb = true;
+            board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
         }
@@ -330,6 +359,7 @@ public class Dot : MonoBehaviour
         if (!isColumnBomb && !isRowBomb && !isAdjacentBomb) 
         {
             isColorBomb = true;
+            board.debugLog("Make Color bomb", "");
             GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
             color.transform.parent = this.transform;
             this.gameObject.tag = "Color";
@@ -342,6 +372,7 @@ public class Dot : MonoBehaviour
         if (!isColumnBomb && !isRowBomb && !isColorBomb) 
         {
             isAdjacentBomb = true;
+            board.debugLog("Make adjacent bomb", "");
             GameObject marker = Instantiate(AdjacentMarker, transform.position, Quaternion.identity);
             marker.transform.parent = this.transform;
         }

@@ -16,6 +16,8 @@ public class FindMatches : MonoBehaviour
 
     public void FindAllMatches() 
     {
+        board.debugLog("FindAllMatches()", "-----------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         StartCoroutine(FindAllmatchesCo());
     }
 
@@ -94,21 +96,28 @@ public class FindMatches : MonoBehaviour
 
     private void AddToListAndMatch(GameObject dot) 
     {
+        board.debugLog("AddToListAndMatch()", "----------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         if (!currentMatches.Contains(dot)) // если нынешний матч не имеет левый элемент то добавить левый элемент
         {
             currentMatches.Add(dot);
+            board.debugLog("CurrentMatches = " + currentMatches.ToString(), "");
         }
         dot.GetComponent<Dot>().isMatched = true;
     }
 
     private void GetNearbyPieces(GameObject dot1, GameObject dot2, GameObject dot3) 
     {
+        board.debugLog("GetNearbyPieces()", "----------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         AddToListAndMatch(dot1);
         AddToListAndMatch(dot2);
         AddToListAndMatch(dot3);
     }
     private IEnumerator FindAllmatchesCo()
     {
+        board.debugLog("FindAllMatchesCo()", "------------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         yield return new WaitForSeconds(.2f); // пауза 0,2 секунды
         for (int i = 0; i < board.width; i++) 
         {
@@ -170,6 +179,8 @@ public class FindMatches : MonoBehaviour
 
     public void MatchPiecesOfColors(string color) 
     {
+        board.debugLog("MatchPiecesOfColors", "---------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 
@@ -256,6 +267,8 @@ public class FindMatches : MonoBehaviour
 
     public void ChekcBombs() 
     {
+        board.debugLog("CheckBombs()", "-------------");
+        board.debugLog("GameState = " + board.currentState.ToString(), "");
         // проверка на то что двигал ли что то игрок
         if (board.currentDot != null) 
         {
@@ -299,5 +312,7 @@ public class FindMatches : MonoBehaviour
                 }
             }
         }
+        board.debugLog("GameState = " + board.currentState.ToString(), "---------------");
     }
+    
 }
