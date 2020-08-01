@@ -754,7 +754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraOffset: -10
-  aspectRatio: 0.5625
+  aspectRatio: 0.56
   padding: 2
   yOffset: 0.5
 --- !u!20 &519420031

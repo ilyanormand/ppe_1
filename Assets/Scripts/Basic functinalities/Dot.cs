@@ -285,7 +285,7 @@ public class Dot : MonoBehaviour
                         board.debugLog("GameState = " + board.currentState.ToString(), "");
                     }
                 }
-                board.DestroyMatches(); // уничтожить заматченые элементы   
+                board.DestroyMatches(); // уничтожить заматченые элементы
                 board.debugLog("GameState = " + board.currentState.ToString(), "-----------------");
             }
             //otherDot = null;
@@ -336,42 +336,24 @@ public class Dot : MonoBehaviour
 
     public void MakeRowBomb() 
     {
-        Debug.Log("isColumnBomb = " + isColumnBomb);
-        Debug.Log("isColorBomb = " + isColorBomb);
-        Debug.Log("isAdjacentBomb = " + isAdjacentBomb);
         if (isColumnBomb == false && isColorBomb == false && isAdjacentBomb == false)
         {
-            Debug.Log("Starting Function MakeRowBomb");
             board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
             isRowBomb = true;
-        }
-        else 
-        {
-            Debug.Log("Already a bomb");
-        }
-        
+        }   
     }
 
     public void MakeColumnBomb()
     {
-        Debug.Log("isRowBomb = " + isRowBomb);
-        Debug.Log("isColorBomb = " + isColorBomb);
-        Debug.Log("isAdjacentBomb = " + isAdjacentBomb);
         if (isRowBomb == false && isColorBomb == false && isAdjacentBomb == false) 
         {
-            Debug.Log("Starting Function MakeColumnBomb");
             board.debugLog("Make Column bomb", "");
             GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
             arrow.transform.parent = this.transform;
             isColumnBomb = true;
         }
-        else
-        {
-            Debug.Log("Already a bomb");
-        }
-
     }
 
     public void MakeColorBomb()

@@ -16,8 +16,8 @@ public class FindMatches : MonoBehaviour
 
     public void FindAllMatches() 
     {
-        board.debugLog("FindAllMatches()", "-----------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
+        //board.debugLog("FindAllMatches()", "-----------");
+        //board.debugLog("GameState = " + board.currentState.ToString(), "");
         StartCoroutine(FindAllmatchesCo());
     }
 
@@ -269,7 +269,7 @@ public class FindMatches : MonoBehaviour
     {
         board.debugLog("CheckBombs()", "-------------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
-        Debug.Log("CheckBombs()");
+        //Debug.Log("CheckBombs()");
         // проверка на то что двигал ли что то игрок
         if (board.currentDot != null) 
         {

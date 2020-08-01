@@ -513,7 +513,6 @@ public class Board : MonoBehaviour
             }
             else if (typeOfMatch == 3) 
             {
-                Debug.Log("TypeOfMatch = 3, create a column/row bomb");
                 findMatches.ChekcBombs();
                 debugLog("Запуск CheckBombs", "---------------");
             }
@@ -624,6 +623,7 @@ public class Board : MonoBehaviour
     // уничтожение заматченых элементов
     private void DestroyMatchesAt(int column, int row) 
     {
+        Debug.Log("Start DestroyMatchesAt(), GameState = " + currentState);
         debugLog("Запуск функции уничтожение матчей", "--->");
         if (allDots[column, row].GetComponent<Dot>().isMatched) 
         {
@@ -674,11 +674,13 @@ public class Board : MonoBehaviour
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
+            Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
     }
     // перебор всех элементов для того чтобы уничтожить матчи
     public void DestroyMatches()
     {
+        currentState = GameState.wait;
         debugLog("Запуск функции перебора для уничтожения", "-------------");
         for (int i = 0; i < width; i++) 
         {
@@ -690,9 +692,11 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        Debug.Log("End DestroyMatches, GameState = " + currentState);
         findMatches.currentMatches.Clear();
         debugLog("Очистить массив currentMatches", "");
         StartCoroutine(DecreaseRowCo2());
+        currentState = GameState.move;
     }
     // сдвиг элементов при уничтожение матча
     private void DamageConcrete(int column, int row) 
@@ -797,7 +801,8 @@ public class Board : MonoBehaviour
     }
     private IEnumerator DecreaseRowCo2() 
     {
-        debugLog("Запуск сдвига фруктов", "--------------");
+        //debugLog("Запуск сдвига фруктов", "--------------");
+        Debug.Log("Start DecreaseRowCo2(), GameState = " + currentState);
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++)
@@ -819,7 +824,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        debugLog("Ожидание:" + refillDelay.ToString(), "");
+        //debugLog("Ожидание:" + refillDelay.ToString(), "");
         yield return new WaitForSeconds(0.001f);
         StartCoroutine(FillBoardCo());
     }
@@ -851,6 +856,7 @@ public class Board : MonoBehaviour
     private void RefilBoard() 
     {
         debugLog("Запуск функии RefilBoard", "--------");
+        currentState = GameState.wait;
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++) 
@@ -873,6 +879,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        Debug.Log("End Refil Board, GameState = " + currentState);
     }
 
     // нахождение новыых матчей
@@ -902,19 +909,20 @@ public class Board : MonoBehaviour
     // Основная функция заполнения таблицы 
     private IEnumerator FillBoardCo() 
     {
-        debugLog("Запуск основной функции заполнения таблицы FillBoardCo", "------------");
+        currentState = GameState.wait;
+        //debugLog("Запуск основной функции заполнения таблицы FillBoardCo", "------------");
         RefilBoard();
         yield return new WaitForSeconds(refillDelay);
         while (MatchesOnBoard())
         {
-            debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
+            //debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
             streakValue++;
             yield return new WaitForSeconds(.7f);
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay);
         }
         findMatches.currentMatches.Clear();
-        debugLog("Кончились матчи в таблице", "---> очистить массив currentMatches");
+        //debugLog("Кончились матчи в таблице", "---> очистить массив currentMatches");
         currentDot = null;
         checkToMakeChoco();
         yield return new WaitForSeconds(refillDelay);
@@ -923,14 +931,11 @@ public class Board : MonoBehaviour
             ShuffleBoard();
             Debug.LogError("DeadLocked");
         }
-        if (currentState != GameState.pause) 
-        {
-            currentState = GameState.move;
-            debugLog("Смена GameState:", "--> " + currentState.ToString());
-        }
         makeSlime = true;
-        debugLog("makeSlime = true :", "--> " + makeSlime.ToString());
+        //debugLog("makeSlime = true :", "--> " + makeSlime.ToString());
         streakValue = 1;
+        currentState = GameState.move;
+        Debug.Log("End FillBoardCo(), GameState = " + currentState);
     }
 
     // проверка на что стоит ли создавать шоколадку
@@ -1021,6 +1026,7 @@ public class Board : MonoBehaviour
 
     private void SwitchPieces(int column, int row, Vector2 direction) // поменять элементы местами
     {
+        currentState = GameState.wait;
         debugLog("SwitchPieces()", "-----------");
         if (allDots[column + (int)direction.x, row + (int)direction.y] != null)
         {
@@ -1030,7 +1036,8 @@ public class Board : MonoBehaviour
             allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
             allDots[column, row] = holder;
         }
-
+        Debug.Log("End SwitchPieces, GameState = " + currentState);
+        currentState = GameState.move;
     }
 
     private bool CheckForMatches() // проверка на матч
@@ -1062,6 +1069,7 @@ public class Board : MonoBehaviour
                             if (allDots[i, j + 1].tag == allDots[i, j].tag && allDots[i, j + 2].tag == allDots[i, j].tag)
                             {
                                 debugLog("Match true", "");
+                                Debug.Log("CheckForMatches(), GameState = " + currentState);
                                 return true;
                             }
                         }
@@ -1071,6 +1079,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        Debug.Log("CheckForMacthes(), GameState = " + currentState);
         debugLog("Match false", "");
         return false;
     }
