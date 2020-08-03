@@ -164,6 +164,7 @@ public class Dot : MonoBehaviour
     void CalculateAngle() 
     {
         board.debugLog("CalculateAngle()", "----------");
+        board.currentState = GameState.wait;
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         movePieces();
         board.currentDot = this;
@@ -193,12 +194,12 @@ public class Dot : MonoBehaviour
             }
             else
             {
-                //board.currentState = GameState.move;
+                board.currentState = GameState.move;
             }
         }
         else
         {
-            //board.currentState = GameState.move;
+            board.currentState = GameState.move;
         }
 
     }
@@ -207,7 +208,6 @@ public class Dot : MonoBehaviour
     void movePieces()
     {
         board.debugLog("MovePieces()", "------------");
-        board.currentState = GameState.wait;
         board.debugLog("GameState = " + board.currentState.ToString(), "");
         if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1 && swipeAngle != 0)
         {
@@ -235,7 +235,6 @@ public class Dot : MonoBehaviour
         }
         else 
         {
-            board.currentState = GameState.move;
             board.debugLog("GameState = " + board.currentState.ToString(), "");
         }
         

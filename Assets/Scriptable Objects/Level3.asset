@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338fce61487a0bd4bb463f8a31ee6990, type: 3}
   m_Name: Level3
   m_EditorClassIdentifier: 
-  width: 4
-  height: 4
+  width: 9
+  height: 9
   boardLayout: []
   dots:
   - {fileID: 153084, guid: 552227f7d7092a848bc3231f2a2a5a54, type: 3}

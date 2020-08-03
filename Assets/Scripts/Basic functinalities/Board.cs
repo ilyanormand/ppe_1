@@ -623,7 +623,7 @@ public class Board : MonoBehaviour
     // уничтожение заматченых элементов
     private void DestroyMatchesAt(int column, int row) 
     {
-        Debug.Log("Start DestroyMatchesAt(), GameState = " + currentState);
+        //Debug.Log("Start DestroyMatchesAt(), GameState = " + currentState);
         debugLog("Запуск функции уничтожение матчей", "--->");
         if (allDots[column, row].GetComponent<Dot>().isMatched) 
         {
@@ -674,7 +674,7 @@ public class Board : MonoBehaviour
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
-            Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
+            //Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
     }
     // перебор всех элементов для того чтобы уничтожить матчи
@@ -692,11 +692,10 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        Debug.Log("End DestroyMatches, GameState = " + currentState);
+        //Debug.Log("End DestroyMatches, GameState = " + currentState);
         findMatches.currentMatches.Clear();
         debugLog("Очистить массив currentMatches", "");
         StartCoroutine(DecreaseRowCo2());
-        currentState = GameState.move;
     }
     // сдвиг элементов при уничтожение матча
     private void DamageConcrete(int column, int row) 
@@ -801,8 +800,9 @@ public class Board : MonoBehaviour
     }
     private IEnumerator DecreaseRowCo2() 
     {
+        //currentState = GameState.wait;
         //debugLog("Запуск сдвига фруктов", "--------------");
-        Debug.Log("Start DecreaseRowCo2(), GameState = " + currentState);
+        //Debug.Log("Start DecreaseRowCo2(), GameState = " + currentState);
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++)
@@ -856,7 +856,6 @@ public class Board : MonoBehaviour
     private void RefilBoard() 
     {
         debugLog("Запуск функии RefilBoard", "--------");
-        currentState = GameState.wait;
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++) 
@@ -879,7 +878,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        Debug.Log("End Refil Board, GameState = " + currentState);
+        //Debug.Log("End Refil Board, GameState = " + currentState);
     }
 
     // нахождение новыых матчей
@@ -909,7 +908,7 @@ public class Board : MonoBehaviour
     // Основная функция заполнения таблицы 
     private IEnumerator FillBoardCo() 
     {
-        currentState = GameState.wait;
+        //currentState = GameState.wait;
         //debugLog("Запуск основной функции заполнения таблицы FillBoardCo", "------------");
         RefilBoard();
         yield return new WaitForSeconds(refillDelay);
@@ -921,11 +920,12 @@ public class Board : MonoBehaviour
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay);
         }
+        Debug.Log(MatchesOnBoard());
         findMatches.currentMatches.Clear();
         //debugLog("Кончились матчи в таблице", "---> очистить массив currentMatches");
         currentDot = null;
-        checkToMakeChoco();
         yield return new WaitForSeconds(refillDelay);
+        checkToMakeChoco();
         if (isDeadLocked()) 
         {
             ShuffleBoard();
@@ -934,8 +934,9 @@ public class Board : MonoBehaviour
         makeSlime = true;
         //debugLog("makeSlime = true :", "--> " + makeSlime.ToString());
         streakValue = 1;
-        currentState = GameState.move;
-        Debug.Log("End FillBoardCo(), GameState = " + currentState);
+        yield return new WaitForSeconds(1f);
+        currentState = GameState.move; 
+        //Debug.Log("End FillBoardCo(), GameState = " + currentState);
     }
 
     // проверка на что стоит ли создавать шоколадку
@@ -952,10 +953,12 @@ public class Board : MonoBehaviour
                 {
                     //call another method to make a new slime
                     MakeNewSlime();
+                    //currentState = GameState.move;
                     return;
                 }
             }
         }
+       // currentState = GameState.move;
 
     }
 
@@ -1026,7 +1029,6 @@ public class Board : MonoBehaviour
 
     private void SwitchPieces(int column, int row, Vector2 direction) // поменять элементы местами
     {
-        currentState = GameState.wait;
         debugLog("SwitchPieces()", "-----------");
         if (allDots[column + (int)direction.x, row + (int)direction.y] != null)
         {
@@ -1036,8 +1038,7 @@ public class Board : MonoBehaviour
             allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
             allDots[column, row] = holder;
         }
-        Debug.Log("End SwitchPieces, GameState = " + currentState);
-        currentState = GameState.move;
+        //Debug.Log("End SwitchPieces, GameState = " + currentState);
     }
 
     private bool CheckForMatches() // проверка на матч
@@ -1069,7 +1070,7 @@ public class Board : MonoBehaviour
                             if (allDots[i, j + 1].tag == allDots[i, j].tag && allDots[i, j + 2].tag == allDots[i, j].tag)
                             {
                                 debugLog("Match true", "");
-                                Debug.Log("CheckForMatches(), GameState = " + currentState);
+                                //Debug.Log("CheckForMatches(), GameState = " + currentState);
                                 return true;
                             }
                         }
@@ -1079,7 +1080,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        Debug.Log("CheckForMacthes(), GameState = " + currentState);
+        //Debug.Log("CheckForMacthes(), GameState = " + currentState);
         debugLog("Match false", "");
         return false;
     }

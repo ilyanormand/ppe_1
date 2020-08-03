@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338fce61487a0bd4bb463f8a31ee6990, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
-  width: 6
-  height: 8
+  width: 9
+  height: 9
   boardLayout:
   - x: 4
     y: 4
@@ -33,10 +33,10 @@ MonoBehaviour:
     counterValues: 600
   levelGoals:
   - numberNeeded: 1000
-    numberCollected: 10
+    numberCollected: 21
     goalSprite: {fileID: 21300004, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: green1
   - numberNeeded: 10
-    numberCollected: 10
+    numberCollected: 29
     goalSprite: {fileID: 21300008, guid: 51e2a399831333b478ec978ee598bf0e, type: 3}
     matchValue: blue1
