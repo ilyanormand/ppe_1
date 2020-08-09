@@ -9,21 +9,36 @@ public class HintManager : MonoBehaviour
     private float hintDelaySeconds;
     public GameObject hintParticle;
     public GameObject currentHint;
+    public float animationSpeed;
+    public bool hint = false;
+    Vector2 scale;
     void Start()
     {
         board = FindObjectOfType<Board>();
         hintDelaySeconds = hintDelay;
+        hint = false;
     }
 
    
     void Update()
     {
         hintDelaySeconds -= Time.deltaTime;
-        if (hintDelaySeconds <= 0 && currentHint == null) 
+        if (hintDelaySeconds <= 0 && currentHint == null)
         {
+            hint = false;
             MarkHint();
             hintDelaySeconds = hintDelay;
         }
+        else if (hint == true) 
+        {
+            MarkHint();
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log(hint);
+        DestroyHint();
     }
 
 
@@ -43,7 +58,14 @@ public class HintManager : MonoBehaviour
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.right))
                             {
-                                possibleMoves.Add(board.allDots[i, j]);
+                                board.MatchList.Add(board.allDots[i, j]);
+                                foreach (GameObject k in board.MatchList) 
+                                {
+                                    possibleMoves.Add(k);
+                                }
+                                board.MatchList.Clear();
+                                Debug.Log(possibleMoves.Count);
+                                return possibleMoves;
                             }
                         }
 
@@ -51,7 +73,14 @@ public class HintManager : MonoBehaviour
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.up))
                             {
-                                possibleMoves.Add(board.allDots[i, j]);
+                                board.MatchList.Add(board.allDots[i, j]);
+                                foreach (GameObject k in board.MatchList)
+                                {
+                                    possibleMoves.Add(k);
+                                }
+                                board.MatchList.Clear();
+                                Debug.Log(possibleMoves.Count);
+                                return possibleMoves;
                             }
                         }
                     }
@@ -67,39 +96,63 @@ public class HintManager : MonoBehaviour
         
     }
     //выбрать случайным образом любой матч из всевозможных
-    GameObject pickOneRandomly() 
+    List<GameObject> pickOneRandomly() 
     {
         List<GameObject> possibleMoves = new List<GameObject>();
         possibleMoves = FindAllPossibileMatches();
         if (possibleMoves != null) 
         {
-            if (possibleMoves.Count > 0)
+            if (possibleMoves.Count == 3)
             {
-                int pieceToUse = Random.Range(0, possibleMoves.Count);
-                return possibleMoves[pieceToUse];
+                return possibleMoves;
+            }
+            else 
+            {
+                Debug.Log("possibleMoves is empty");
             }
         }
-        
         return null;
     }
 
     private void MarkHint() 
     {
-        GameObject move = pickOneRandomly();
-        if (move != null) 
+        List<GameObject> move = pickOneRandomly();
+        if (move != null)
         {
-            currentHint = Instantiate(hintParticle, move.transform.position, Quaternion.identity);
+            if (hint == true)
+            {
+                Debug.Log("Запуск anim");
+                foreach (GameObject i in move)
+                {
+                    Animator anim = i.GetComponent<Animator>();
+                    anim.enabled = false;
+                }
+
+                
+            }
+            else 
+            {
+                Debug.Log("move != null");
+                foreach (GameObject i in move)
+                {
+                    Animator anim = i.GetComponent<Animator>();
+                    anim.enabled = true;
+                }
+                move.Clear();
+            }
+
+            
+        }
+        else 
+        {
+            Debug.Log("Move == null");
         }
     }
 
     public void DestroyHint()
     {
-        if (currentHint != null) 
-        {
-            Destroy(currentHint);
-            currentHint = null;
-            hintDelaySeconds = hintDelay;
-        }
+        hintDelaySeconds = hintDelay;
+        hint = true;
     }
 
     // создать подсказку

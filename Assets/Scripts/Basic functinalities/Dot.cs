@@ -138,6 +138,7 @@ public class Dot : MonoBehaviour
         // Уничтожить подсказку
         if (hintManager != null) 
         {
+            Debug.Log(hintManager.hint);
             hintManager.DestroyHint();
         }
         

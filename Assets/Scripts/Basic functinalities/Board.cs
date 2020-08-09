@@ -65,6 +65,9 @@ public class Board : MonoBehaviour
     [Header("for debuging")]
     public bool debug = true;
 
+    [Header("For HintManager")]
+    public List<GameObject> MatchList;
+
     private void Awake()
     {
         if (PlayerPrefs.HasKey("Current Level"))
@@ -920,7 +923,7 @@ public class Board : MonoBehaviour
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay);
         }
-        Debug.Log(MatchesOnBoard());
+        //Debug.Log(MatchesOnBoard());
         findMatches.currentMatches.Clear();
         //debugLog("Кончились матчи в таблице", "---> очистить массив currentMatches");
         currentDot = null;
@@ -1043,6 +1046,7 @@ public class Board : MonoBehaviour
 
     private bool CheckForMatches() // проверка на матч
     {
+        MatchList = new List<GameObject>();
         debugLog("CheckForMatches", "----------");
         for (int i = 0; i < width; i++)
         {
@@ -1057,8 +1061,15 @@ public class Board : MonoBehaviour
                             if (allDots[i + 1, j].tag == allDots[i, j].tag && allDots[i + 2, j].tag == allDots[i, j].tag)
                             {
                                 debugLog("Match true", "");
+                                MatchList.Add(allDots[i + 1, j]);
+                                MatchList.Add(allDots[i + 2, j]);
+                                /*Debug.Log(MatchList);
+                                Debug.Log("column");
+                                foreach (GameObject k in MatchList)
+                                {
+                                    Debug.Log(k);
+                                }*/
                                 return true;
-                                
                             }
                         }
                     }
@@ -1071,6 +1082,14 @@ public class Board : MonoBehaviour
                             {
                                 debugLog("Match true", "");
                                 //Debug.Log("CheckForMatches(), GameState = " + currentState);
+                                MatchList.Add(allDots[i, j+1]);
+                                MatchList.Add(allDots[i, j+2]);
+                                /*Debug.Log(MatchList);
+                                Debug.Log("row");
+                                foreach (GameObject k in MatchList)
+                                {
+                                    Debug.Log(k);
+                                }*/
                                 return true;
                             }
                         }
@@ -1082,6 +1101,7 @@ public class Board : MonoBehaviour
         }
         //Debug.Log("CheckForMacthes(), GameState = " + currentState);
         debugLog("Match false", "");
+        MatchList.Clear();
         return false;
     }
 
