@@ -12,16 +12,20 @@ public class HintManager : MonoBehaviour
     public float animationSpeed;
     public bool hint = false;
     public List<GameObject> tutorialElements;
+    private Tutorial tutorial;
+    public GameObject finger;
+    public float speedOffinger;
     Vector2 scale;
     void Start()
     {
         board = FindObjectOfType<Board>();
         tutorialElements = new List<GameObject>();
+        tutorial = FindObjectOfType<Tutorial>();
         hintDelaySeconds = hintDelay;
         hint = false;
     }
 
-   
+
     void Update()
     {
         hintDelaySeconds -= Time.deltaTime;
@@ -31,7 +35,7 @@ public class HintManager : MonoBehaviour
             MarkHint();
             hintDelaySeconds = hintDelay;
         }
-        else if (hint == true) 
+        else if (hint == true)
         {
             MarkHint();
         }
@@ -45,7 +49,7 @@ public class HintManager : MonoBehaviour
 
 
     //Нужно найти все всевозможные матчи в таблицы
-    List<GameObject> FindAllPossibileMatches() 
+    List<GameObject> FindAllPossibileMatches()
     {
         if (board.currentState == GameState.move)
         {
@@ -61,7 +65,24 @@ public class HintManager : MonoBehaviour
                             if (board.SwitchAndCheck(i, j, Vector2.right))
                             {
                                 board.MatchList.Add(board.allDots[i, j]);
-                                foreach (GameObject k in board.MatchList) 
+                                Vector2 tempPosition = new Vector2(i, j);
+                                if (finger == null)
+                                {
+                                    finger = Instantiate(tutorial.FingerPrefab, tempPosition, Quaternion.identity);
+                                    finger.transform.parent = board.allDots[i, j].transform;
+                                    finger.name = "FingerTutorial";
+                                    finger.GetComponent<Animator>().SetBool("right", true);
+                                }
+                                else
+                                {
+                                    float step = speedOffinger * Time.deltaTime;
+                                    Vector2 targetPosition = new Vector2(i + 1, j);
+                                    finger.transform.position = Vector2.Lerp(finger.transform.position, targetPosition, step);
+                                    //finger.transform.position = new Vector2(i, j);
+
+                                }
+
+                                foreach (GameObject k in board.MatchList)
                                 {
                                     possibleMoves.Add(k);
                                 }
@@ -76,6 +97,22 @@ public class HintManager : MonoBehaviour
                             if (board.SwitchAndCheck(i, j, Vector2.up))
                             {
                                 board.MatchList.Add(board.allDots[i, j]);
+                                Vector2 tempPosition = new Vector2(i, j);
+                                if (finger == null)
+                                {
+                                    finger = Instantiate(tutorial.FingerPrefab, tempPosition, Quaternion.identity);
+                                    finger.transform.parent = board.allDots[i, j].transform;
+                                    finger.name = "FingerTutorial";
+                                    finger.GetComponent<Animator>().SetBool("up", true);
+                                }
+                                else
+                                {
+                                    float step = speedOffinger * Time.deltaTime;
+                                    Vector2 targetPosition = new Vector2(i, j + 1);
+                                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, targetPosition, step);
+                                    //finger.transform.position = new Vector2(i, j);
+
+                                }
                                 foreach (GameObject k in board.MatchList)
                                 {
                                     possibleMoves.Add(k);
@@ -90,13 +127,14 @@ public class HintManager : MonoBehaviour
             }
             return possibleMoves;
         }
-        else 
+        else
         {
             hintDelaySeconds = hintDelay;
             return null;
         }
-        
+
     }
+
     //выбрать случайным образом любой матч из всевозможных
     public List<GameObject> pickOneRandomly() 
     {

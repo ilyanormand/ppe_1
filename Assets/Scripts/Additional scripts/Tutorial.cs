@@ -8,11 +8,13 @@ public class Tutorial : MonoBehaviour
     public bool tutorialShow;
     public GameObject BackgroundTutorial;
     public Dot dot;
+    public GameObject FingerPrefab;
     void Start()
     {
         hintManager = FindObjectOfType<HintManager>();
         dot = FindObjectOfType<Dot>();
         tutorialShow = true;
+        dot.notTutorial = false;
     }
 
     void Update()

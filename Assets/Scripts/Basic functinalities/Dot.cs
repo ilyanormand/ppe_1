@@ -32,6 +32,7 @@ public class Dot : MonoBehaviour
 
     [Header("Для тестов")]
     public GameObject fruit;
+    public bool notTutorial;
     void Start()
     {
         tutorial = FindObjectOfType<Tutorial>();
