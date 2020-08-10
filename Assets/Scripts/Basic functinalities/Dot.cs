@@ -20,6 +20,7 @@ public class Dot : MonoBehaviour
     private FindMatches findMatches;
     private Board board;
     private Vector2 firstTouchPosition, finalTouchPosition, tempPosition;
+    public Tutorial tutorial;
 
     
     public bool isMatched = false;
@@ -33,6 +34,7 @@ public class Dot : MonoBehaviour
     public GameObject fruit;
     void Start()
     {
+        tutorial = FindObjectOfType<Tutorial>();
         endGameManager = FindObjectOfType<EndGameManager>();
         isColumnBomb = false;
         isRowBomb = false;
@@ -191,6 +193,7 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
                 column += (int)direction.x;
                 row += (int)direction.y;
+                tutorial.tutorialShow = false;
                 StartCoroutine(CheckMoveCo());// проверка на возврат элемента в исходную позицию
             }
             else

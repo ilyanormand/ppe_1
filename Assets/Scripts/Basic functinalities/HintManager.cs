@@ -11,10 +11,12 @@ public class HintManager : MonoBehaviour
     public GameObject currentHint;
     public float animationSpeed;
     public bool hint = false;
+    public List<GameObject> tutorialElements;
     Vector2 scale;
     void Start()
     {
         board = FindObjectOfType<Board>();
+        tutorialElements = new List<GameObject>();
         hintDelaySeconds = hintDelay;
         hint = false;
     }
@@ -96,7 +98,7 @@ public class HintManager : MonoBehaviour
         
     }
     //выбрать случайным образом любой матч из всевозможных
-    List<GameObject> pickOneRandomly() 
+    public List<GameObject> pickOneRandomly() 
     {
         List<GameObject> possibleMoves = new List<GameObject>();
         possibleMoves = FindAllPossibileMatches();
@@ -117,11 +119,11 @@ public class HintManager : MonoBehaviour
     private void MarkHint() 
     {
         List<GameObject> move = pickOneRandomly();
+        tutorialElements = pickOneRandomly();
         if (move != null)
         {
             if (hint == true)
             {
-                Debug.Log("Запуск anim");
                 foreach (GameObject i in move)
                 {
                     Animator anim = i.GetComponent<Animator>();
