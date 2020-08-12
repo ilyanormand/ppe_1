@@ -73,14 +73,19 @@ public class HintManager : MonoBehaviour
                                     finger.name = "FingerTutorial";
                                     finger.GetComponent<Animator>().SetBool("right", true);
                                 }
-                                else
+                                else 
                                 {
-                                    float step = speedOffinger * Time.deltaTime;
-                                    Vector2 targetPosition = new Vector2(i + 1, j);
-                                    finger.transform.position = Vector2.Lerp(finger.transform.position, targetPosition, step);
-                                    //finger.transform.position = new Vector2(i, j);
-
+                                    //animationFinger(i, j, true, finger);
                                 }
+                                
+                                /*else
+                                {
+                                    Vector2 MovePosition = new Vector2(i + 1, j);
+                                    Vector2 startPosition = new Vector2(i, j);
+                                    MoveProgress = Mathf.PingPong(MoveSpeed * Time.time, 1);
+                                    Vector2 offset = MovePosition * MoveProgress;
+                                    finger.transform.position = startPosition + MovePosition;
+                                }*/
 
                                 foreach (GameObject k in board.MatchList)
                                 {
@@ -105,14 +110,20 @@ public class HintManager : MonoBehaviour
                                     finger.name = "FingerTutorial";
                                     finger.GetComponent<Animator>().SetBool("up", true);
                                 }
-                                else
+                                else 
+                                {
+                                    //animationFinger(i, j, false, finger);
+                                }
+                                
+                                /*else
                                 {
                                     float step = speedOffinger * Time.deltaTime;
                                     Vector2 targetPosition = new Vector2(i, j + 1);
+                                    Vector2 StartPosition = new Vector2(i, j);
                                     finger.transform.position = Vector2.MoveTowards(finger.transform.position, targetPosition, step);
-                                    //finger.transform.position = new Vector2(i, j);
+                                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, StartPosition, step);
 
-                                }
+                                }*/
                                 foreach (GameObject k in board.MatchList)
                                 {
                                     possibleMoves.Add(k);
@@ -133,6 +144,12 @@ public class HintManager : MonoBehaviour
             return null;
         }
 
+    }
+
+    private IEnumerator waitSome() 
+    {
+        Debug.Log("wait for second");
+        yield return new WaitForSeconds(1);
     }
 
     //выбрать случайным образом любой матч из всевозможных
@@ -193,6 +210,86 @@ public class HintManager : MonoBehaviour
     {
         hintDelaySeconds = hintDelay;
         hint = true;
+    }
+
+    public void animationFinger(int column, int row, bool right, GameObject finger)  
+    {
+        int i = 0;
+        bool finishAnimation = false;
+        bool loopActive = true;
+        Vector2 StartPosition = new Vector2(column, row);
+        float step = speedOffinger * Time.deltaTime;
+        if (right)
+        {
+            while (loopActive)
+            {
+                i++;
+                Debug.Log("loop iteration " + i);
+                Debug.Log("move finger right");
+                Debug.Log("step = " + step);
+                Vector2 targetPosition = new Vector2(column + 1, row);
+                Debug.Log("target position: " + targetPosition);
+                Debug.Log("start position: " + StartPosition);
+                finger.transform.position = Vector2.MoveTowards(finger.transform.position, targetPosition, step);
+                Debug.Log("move target position: " + finger.transform.position);
+                
+                if ((Vector2)finger.transform.position == targetPosition)
+                {
+                    finishAnimation = true;
+                    Debug.Log("finishAnimation = " + finishAnimation);
+                }
+                if (finishAnimation)
+                {
+                    StartCoroutine("waitSome");
+                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, StartPosition, step);
+                    Debug.Log("move start position: " + finger.transform.position);
+                    if ((Vector2)finger.transform.position == StartPosition)
+                    {
+                        loopActive = false;
+                        Debug.Log("LoopActive = " + loopActive);
+                        i = 0;
+                    }
+                }
+            }
+        }
+        else 
+        {
+            while (loopActive)
+            {
+                StartCoroutine("waitSome");
+                i++;
+                Debug.Log("loop iteration " + i);
+                Debug.Log("move finger up");
+                Debug.Log("step = " + step);
+                Vector2 targetPosition = new Vector2(column, row + 1);
+                Debug.Log("target position: " + targetPosition);
+                Debug.Log("start position: " + StartPosition);
+                finger.transform.position = Vector2.MoveTowards(finger.transform.position, targetPosition, step);
+                StartCoroutine("waitSome");
+                Debug.Log("move target position: " + finger.transform.position);
+                
+                if ((Vector2)finger.transform.position == targetPosition)
+                {
+                    finishAnimation = true;
+                    Debug.Log("finishAnimation = " + finishAnimation);
+                }
+                if (finishAnimation)
+                {
+                    StartCoroutine("waitSome");
+                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, StartPosition, step);
+                    Debug.Log("move start position: " + finger.transform.position);
+                    if ((Vector2)finger.transform.position == StartPosition)
+                    {
+                        loopActive = false;
+                        Debug.Log("LoopActive = " + loopActive);
+                        i = 0;
+                    }
+                }
+            }
+
+        }
+        
+
     }
 
     // создать подсказку
