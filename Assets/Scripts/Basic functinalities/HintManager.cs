@@ -60,11 +60,11 @@ public class HintManager : MonoBehaviour
                 {
                     if (board.allDots[i, j] != null)
                     {
-                        if (i < board.width - 1)
+                        if (i < board.width - 2)
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.right))
                             {
-                                board.MatchList.Add(board.allDots[i, j]);
+                                //board.MatchList.Add(board.allDots[i, j]);
                                 Vector2 tempPosition = new Vector2(i, j);
                                 if (finger == null)
                                 {
@@ -96,16 +96,15 @@ public class HintManager : MonoBehaviour
                                 return possibleMoves;
                             }
                         }
-                        if (i > 0)
+                        if (i > 1)
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.left))
                             {
-                                board.MatchList.Add(board.allDots[i, j]);
+                                //board.MatchList.Add(board.allDots[i, j]);
                                 Vector2 tempPosition = new Vector2(i, j);
                                 if (finger == null)
                                 {
                                     finger = Instantiate(tutorial.FingerPrefab, tempPosition, Quaternion.identity);
-
                                     finger.transform.parent = board.allDots[i, j].transform;
                                     finger.name = "FingerTutorial";
                                     finger.GetComponent<Animator>().SetBool("left", true);
@@ -134,11 +133,11 @@ public class HintManager : MonoBehaviour
                             }
                         }
 
-                        if (j < board.height - 1)
+                        if (j < board.height - 2)
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.up))
                             {
-                                board.MatchList.Add(board.allDots[i, j]);
+                                //board.MatchList.Add(board.allDots[i, j]);
                                 Vector2 tempPosition = new Vector2(i, j);
                                 if (finger == null)
                                 {
@@ -171,11 +170,11 @@ public class HintManager : MonoBehaviour
                                 return possibleMoves;
                             }
                         }
-                        if (j > 0)
+                        if (j > 1)
                         {
                             if (board.SwitchAndCheck(i, j, Vector2.down))
                             {
-                                board.MatchList.Add(board.allDots[i, j]);
+                                //board.MatchList.Add(board.allDots[i, j]);
                                 Vector2 tempPosition = new Vector2(i, j);
                                 if (finger == null)
                                 {

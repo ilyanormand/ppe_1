@@ -31,7 +31,7 @@ public class Tutorial : MonoBehaviour
         }
 
     }
-
+    
     void changeElementLayer() 
     {
         if (hintManager.tutorialElements != null)

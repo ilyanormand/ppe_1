@@ -1061,6 +1061,7 @@ public class Board : MonoBehaviour
                             if (allDots[i + 1, j].tag == allDots[i, j].tag && allDots[i + 2, j].tag == allDots[i, j].tag)
                             {
                                 debugLog("Match true", "");
+                                MatchList.Add(allDots[i, j]);
                                 MatchList.Add(allDots[i + 1, j]);
                                 MatchList.Add(allDots[i + 2, j]);
                                 /*Debug.Log(MatchList);
@@ -1082,6 +1083,7 @@ public class Board : MonoBehaviour
                             {
                                 debugLog("Match true", "");
                                 //Debug.Log("CheckForMatches(), GameState = " + currentState);
+                                MatchList.Add(allDots[i, j]);
                                 MatchList.Add(allDots[i, j+1]);
                                 MatchList.Add(allDots[i, j+2]);
                                 /*Debug.Log(MatchList);
