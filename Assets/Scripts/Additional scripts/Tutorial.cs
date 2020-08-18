@@ -25,7 +25,9 @@ public class Tutorial : MonoBehaviour
         }
         else if (tutorialShow == false)
         {
+            GameObject finger = GameObject.Find("FingerTutorial");
             BackgroundTutorial.SetActive(false);
+            Destroy(finger);
         }
 
     }

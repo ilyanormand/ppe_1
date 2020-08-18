@@ -96,6 +96,43 @@ public class HintManager : MonoBehaviour
                                 return possibleMoves;
                             }
                         }
+                        if (i > 0)
+                        {
+                            if (board.SwitchAndCheck(i, j, Vector2.left))
+                            {
+                                board.MatchList.Add(board.allDots[i, j]);
+                                Vector2 tempPosition = new Vector2(i, j);
+                                if (finger == null)
+                                {
+                                    finger = Instantiate(tutorial.FingerPrefab, tempPosition, Quaternion.identity);
+
+                                    finger.transform.parent = board.allDots[i, j].transform;
+                                    finger.name = "FingerTutorial";
+                                    finger.GetComponent<Animator>().SetBool("left", true);
+                                }
+                                else
+                                {
+                                    //animationFinger(i, j, true, finger);
+                                }
+                                
+                                /*else
+                                {
+                                    Vector2 MovePosition = new Vector2(i + 1, j);
+                                    Vector2 startPosition = new Vector2(i, j);
+                                    MoveProgress = Mathf.PingPong(MoveSpeed * Time.time, 1);
+                                    Vector2 offset = MovePosition * MoveProgress;
+                                    finger.transform.position = startPosition + MovePosition;
+                                }*/
+
+                                foreach (GameObject k in board.MatchList)
+                                {
+                                    possibleMoves.Add(k);
+                                }
+                                board.MatchList.Clear();
+                                Debug.Log(possibleMoves.Count);
+                                return possibleMoves;
+                            }
+                        }
 
                         if (j < board.height - 1)
                         {
@@ -115,6 +152,43 @@ public class HintManager : MonoBehaviour
                                     //animationFinger(i, j, false, finger);
                                 }
                                 
+                                /*else
+                                {
+                                    float step = speedOffinger * Time.deltaTime;
+                                    Vector2 targetPosition = new Vector2(i, j + 1);
+                                    Vector2 StartPosition = new Vector2(i, j);
+                                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, targetPosition, step);
+                                    finger.transform.position = Vector2.MoveTowards(finger.transform.position, StartPosition, step);
+
+                                }*/
+                                foreach (GameObject k in board.MatchList)
+                                {
+                                    possibleMoves.Add(k);
+                                    Debug.Log("GameObject in board.MacthList = " +  k);
+                                }
+                                board.MatchList.Clear();
+                                Debug.Log("possibleMoves.count = "+ possibleMoves.Count);
+                                return possibleMoves;
+                            }
+                        }
+                        if (j > 0)
+                        {
+                            if (board.SwitchAndCheck(i, j, Vector2.down))
+                            {
+                                board.MatchList.Add(board.allDots[i, j]);
+                                Vector2 tempPosition = new Vector2(i, j);
+                                if (finger == null)
+                                {
+                                    finger = Instantiate(tutorial.FingerPrefab, tempPosition, Quaternion.identity);
+                                    finger.transform.parent = board.allDots[i, j].transform;
+                                    finger.name = "FingerTutorial";
+                                    finger.GetComponent<Animator>().SetBool("down", true);
+                                }
+                                else
+                                {
+                                    //animationFinger(i, j, false, finger);
+                                }
+
                                 /*else
                                 {
                                     float step = speedOffinger * Time.deltaTime;
@@ -184,8 +258,6 @@ public class HintManager : MonoBehaviour
                     Animator anim = i.GetComponent<Animator>();
                     anim.enabled = false;
                 }
-
-                
             }
             else 
             {
