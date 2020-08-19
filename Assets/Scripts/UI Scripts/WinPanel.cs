@@ -17,6 +17,7 @@ public class WinPanel : MonoBehaviour
     public Image[] stars;
     public Text highScoreText;
     public Text starText;
+
     void OnEnable()
     {
         gameData = FindObjectOfType<GameData>();
@@ -25,9 +26,45 @@ public class WinPanel : MonoBehaviour
         SetText();
     }
 
-    // Update is called once per frame
+    void LoadData()
+    {
+        if (gameData != null)
+        {
+            starsActive = gameData.saveData.stars[level];
+            highScore = gameData.saveData.highScores[level];
+        }
+    }
+
+    void SetText()
+    {
+        highScoreText.text = "" + highScore;
+        starText.text = "" + starsActive + "/3";
+    }
+
+    void ActivateStars()
+    {
+
+        //Вернуться с.да когда binary file будет готов
+        for (int i = 0; i < starsActive; i++)
+        {
+            //Debug.Log(stars[i]);
+            stars[i].enabled = true;
+        }
+    }
+
     void Update()
     {
-        
+
+    }
+
+    public void Cancel()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    public void PlayConfirmPanel()
+    {
+        PlayerPrefs.SetInt("Current Level", level);
+        SceneManager.LoadScene(levelToLoad);
     }
 }
