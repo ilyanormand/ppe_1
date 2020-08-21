@@ -43,7 +43,6 @@ public class HintManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log(hint);
         DestroyHint();
     }
 
@@ -92,7 +91,7 @@ public class HintManager : MonoBehaviour
                                     possibleMoves.Add(k);
                                 }
                                 board.MatchList.Clear();
-                                Debug.Log(possibleMoves.Count);
+                                //Debug.Log(possibleMoves.Count);
                                 return possibleMoves;
                             }
                         }
@@ -163,10 +162,10 @@ public class HintManager : MonoBehaviour
                                 foreach (GameObject k in board.MatchList)
                                 {
                                     possibleMoves.Add(k);
-                                    Debug.Log("GameObject in board.MacthList = " +  k);
+                                    //Debug.Log("GameObject in board.MacthList = " +  k);
                                 }
                                 board.MatchList.Clear();
-                                Debug.Log("possibleMoves.count = "+ possibleMoves.Count);
+                                //Debug.Log("possibleMoves.count = "+ possibleMoves.Count);
                                 return possibleMoves;
                             }
                         }
@@ -202,7 +201,7 @@ public class HintManager : MonoBehaviour
                                     possibleMoves.Add(k);
                                 }
                                 board.MatchList.Clear();
-                                Debug.Log(possibleMoves.Count);
+                                //Debug.Log(possibleMoves.Count);
                                 return possibleMoves;
                             }
                         }
@@ -221,7 +220,7 @@ public class HintManager : MonoBehaviour
 
     private IEnumerator waitSome() 
     {
-        Debug.Log("wait for second");
+        //Debug.Log("wait for second");
         yield return new WaitForSeconds(1);
     }
 
@@ -238,7 +237,7 @@ public class HintManager : MonoBehaviour
             }
             else 
             {
-                Debug.Log("possibleMoves is empty");
+                //Debug.Log("possibleMoves is empty");
             }
         }
         return null;
@@ -260,7 +259,7 @@ public class HintManager : MonoBehaviour
             }
             else 
             {
-                Debug.Log("move != null");
+                //Debug.Log("move != null");
                 foreach (GameObject i in move)
                 {
                     Animator anim = i.GetComponent<Animator>();
@@ -273,7 +272,7 @@ public class HintManager : MonoBehaviour
         }
         else 
         {
-            Debug.Log("Move == null");
+            //Debug.Log("Move == null");
         }
     }
 
