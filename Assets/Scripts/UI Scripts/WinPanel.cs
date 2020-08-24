@@ -21,7 +21,7 @@ public class WinPanel : MonoBehaviour
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         board = FindObjectOfType<Board>();
-        Debug.Log("board = " + board);
+        //Debug.Log("board = " + board);
         if (backgroundWinPanel != null) // проверка backgroundWinPanel на существование
         {
             //Debug.Log("backgroundWinPanel != null");
@@ -58,7 +58,7 @@ public class WinPanel : MonoBehaviour
             }
             else 
             {
-                Debug.Log("Not enough of score to have " + i + " star");
+                //Debug.Log("Not enough of score to have " + i + " star");
                 break;
             }
         }
@@ -68,4 +68,6 @@ public class WinPanel : MonoBehaviour
     {
         highScoreText.text = "" + scoreManager.score;
     }
+
+
 }

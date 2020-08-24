@@ -9,12 +9,17 @@ public class Tutorial : MonoBehaviour
     public GameObject BackgroundTutorial;
     public Dot dot;
     public GameObject FingerPrefab;
+    public int level;
     void Start()
     {
         hintManager = FindObjectOfType<HintManager>();
         dot = FindObjectOfType<Dot>();
         tutorialShow = true;
         dot.notTutorial = false;
+        if (level == 1) 
+        {
+            tutorialShow = false;
+        }
     }
 
     void Update()
@@ -45,7 +50,7 @@ public class Tutorial : MonoBehaviour
         }
         else 
         {
-            Debug.Log("fruits == null");
+            //Debug.Log("fruits == null");
         }
         
     }

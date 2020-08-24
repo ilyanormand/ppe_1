@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public enum GameType
 {
     Moves,
@@ -95,6 +96,11 @@ public class EndGameManager : MonoBehaviour
         counter.text = "" + currentCounterValue;
         fadePanelController fade = FindObjectOfType<fadePanelController>();
         fade.GameOver();
+    }
+    
+    public void LevelRestart() 
+    {
+        SceneManager.LoadScene(1);
     }
 
     // Update is called once per frame
