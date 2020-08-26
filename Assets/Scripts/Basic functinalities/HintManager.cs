@@ -32,12 +32,18 @@ public class HintManager : MonoBehaviour
         if (hintDelaySeconds <= 0 && currentHint == null)
         {
             hint = false;
-            MarkHint();
-            hintDelaySeconds = hintDelay;
+            if (board.currentState == GameState.move) 
+            {
+                MarkHint();
+                hintDelaySeconds = hintDelay;
+            }
         }
         else if (hint == true)
         {
-            MarkHint();
+            if (board.currentState == GameState.move)
+            {
+                MarkHint();
+            }
         }
     }
 

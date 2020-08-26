@@ -36,6 +36,8 @@ public class Tutorial : MonoBehaviour
         }
 
     }
+
+
     
     void changeElementLayer() 
     {
