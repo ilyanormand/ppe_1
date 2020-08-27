@@ -37,7 +37,6 @@ public class Tutorial : MonoBehaviour
 
     }
 
-
     
     void changeElementLayer() 
     {
@@ -45,9 +44,12 @@ public class Tutorial : MonoBehaviour
         {
             foreach (GameObject i in hintManager.tutorialElements)
             {
-                GameObject child = i.transform.GetChild(0).gameObject;
-                SpriteRenderer spriteRenderer = child.GetComponent<SpriteRenderer>();
-                spriteRenderer.sortingOrder = 6;
+                if (i != null)
+                {
+                    GameObject child = i.transform.GetChild(0).gameObject;
+                    SpriteRenderer spriteRenderer = child.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sortingOrder = 6;
+                }
             }
         }
         else 
