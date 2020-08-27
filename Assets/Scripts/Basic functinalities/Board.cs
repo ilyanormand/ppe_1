@@ -39,8 +39,9 @@ public class Board : MonoBehaviour
     public int width, offset, height;
 
     [Header("Prefabs")]
-    public GameObject explosionEffect, breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
+    public GameObject breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
     public GameObject[] dots;// массив где будут храниться элементы игры матч 3
+    public GameObject DonutExplosion, HeartExplosion, GreenBlopExplosion, RedSweetExplosion, StarExplosion, VioletExplosion;
 
     [Header("Layout")]
     //private BackgroundTile[,] allTiles; // пустой массив для хранение плиток
@@ -671,14 +672,52 @@ public class Board : MonoBehaviour
             {
                 soundManager.playDestroyNoise();
             }
-            GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
-            Destroy(particle, 0.2f);
+            /*GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.2f);*/
+            checkForColor(allDots[column, row], column, row);
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
             //Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
     }
+
+    //метод который проверяет какого цвета должен быть эффект взрыва
+    public void checkForColor(GameObject dot, int column, int row)
+    {
+        if (dot.tag == "Donut")
+        {
+            GameObject particle = Instantiate(DonutExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+        else if (dot.tag == "Heart")
+        {
+            GameObject particle = Instantiate(HeartExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+        else if (dot.tag == "GreenBlop")
+        {
+            GameObject particle = Instantiate(GreenBlopExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+        else if (dot.tag == "RedSweet")
+        {
+            GameObject particle = Instantiate(RedSweetExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+        else if (dot.tag == "StartElement")
+        {
+            GameObject particle = Instantiate(StarExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+        else if (dot.tag == "VioletSweet")
+        {
+            GameObject particle = Instantiate(VioletExplosion, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.3f);
+        }
+    }
+
+
     // перебор всех элементов для того чтобы уничтожить матчи
     public void DestroyMatches()
     {
