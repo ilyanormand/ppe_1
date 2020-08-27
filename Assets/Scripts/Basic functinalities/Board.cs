@@ -672,8 +672,7 @@ public class Board : MonoBehaviour
                 soundManager.playDestroyNoise();
             }
             GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
-            debugLog("Создание эффекта уничтожения", "");
-            Destroy(particle, .2f);
+            Destroy(particle, 0.2f);
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
