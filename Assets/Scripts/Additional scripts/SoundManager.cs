@@ -5,6 +5,8 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public AudioSource[] destroyPieceSound;
+    public AudioSource stripeSoundRow;
+    public AudioSource stripeSoundColumn;
     public AudioSource backcgroundMusic;
 
     private void Start()
@@ -49,7 +51,7 @@ public class SoundManager : MonoBehaviour
     public void playDestroyNoise() 
     {
 
-        if (PlayerPrefs.HasKey("Sound")) // проверка на наличие ключа sound
+        /*if (PlayerPrefs.HasKey("Sound")) // проверка на наличие ключа sound
         {
             if (PlayerPrefs.GetInt("Sound") == 1) // проверка на то что значение ключа равно 1
             {
@@ -58,14 +60,32 @@ public class SoundManager : MonoBehaviour
                 // play that clip
                 destroyPieceSound[clipToPlay].Play();
             }
-        }
-        else 
+        }*/
+        /*else 
         {
             //choose a random number
             int clipToPlay = Random.Range(0, destroyPieceSound.Length);
             // play that clip
             destroyPieceSound[clipToPlay].Play();
-        }
-        
+        }*/
+
+        //choose a random number
+        int clipToPlay = Random.Range(0, destroyPieceSound.Length);
+        // play that clip
+        destroyPieceSound[clipToPlay].Play();
     }
+
+    public void playStripeSound(string type) 
+    {
+        if (type == "row" || type == "Row")
+        {
+            stripeSoundRow.Play();
+        }
+        else if (type == "Column" || type == "column") 
+        {
+            stripeSoundColumn.Play();
+        }
+
+
+    } 
 }

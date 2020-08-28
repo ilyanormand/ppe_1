@@ -9,9 +9,13 @@ public class FindMatches : MonoBehaviour
 
     private Board board;
     public List<GameObject> currentMatches = new List<GameObject>();
+    public GameObject stripesEffect;
+    public SoundManager soundManager;
+    public bool soundStripe = false;
     void Start()
     {
         board = FindObjectOfType<Board>();
+        stripesEffect = board.StripesBombExplosion;
     }
 
     public void FindAllMatches() 
@@ -65,7 +69,6 @@ public class FindMatches : MonoBehaviour
             currentMatches.Union(GetRowPieces(dot3.row));
             board.BombRow(dot3.row);
         }
-
         return CurrentDots;
     }
 
@@ -90,7 +93,6 @@ public class FindMatches : MonoBehaviour
             currentMatches.Union(GetColumnPieces(dot3.column));
             board.BombColumn(dot3.column);
         }
-
         return CurrentDots;
     }
 
@@ -238,9 +240,12 @@ public class FindMatches : MonoBehaviour
                 }
                 dots.Add(board.allDots[column, i]);
                 dot.isMatched = true;
+                
             }
         }
-
+        GameObject stripeRow = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.Euler(0f, 0f, 90f));
+        soundManager.playStripeSound("column");
+        Destroy(stripeRow, 0.3f);
         return dots;
     }
 
@@ -259,11 +264,17 @@ public class FindMatches : MonoBehaviour
 
                 dots.Add(board.allDots[i, row]);
                 dot.isMatched = true;
+                
             }
         }
-
+        GameObject stripeColumn = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.identity);
+        soundStripe = true;
+        soundManager.playStripeSound("row");
+        Destroy(stripeColumn, 0.3f);
         return dots;
     }
+
+    
 
     public void ChekcBombs() 
     {

@@ -40,8 +40,16 @@ public class Board : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
+    [Space(20)]
     public GameObject[] dots;// массив где будут храниться элементы игры матч 3
+
+    [Header("Prefabs for explosion effects")]
+    // обычные эффекты взрывов разных элементов
     public GameObject DonutExplosion, HeartExplosion, GreenBlopExplosion, RedSweetExplosion, StarExplosion, VioletExplosion;
+    //эффекты взрывов для бомбочек
+    public GameObject StripesBombExplosion, ColorBombExplosion, ColorBombTrails, AdjacentBombExplosion;
+ 
+
 
     [Header("Layout")]
     //private BackgroundTile[,] allTiles; // пустой массив для хранение плиток
@@ -668,16 +676,17 @@ public class Board : MonoBehaviour
                 goalManager.UpdateGoals();
             }
 
-            if (soundManager != null) 
+            if (soundManager != null && findMatches.soundStripe == false) 
             {
                 soundManager.playDestroyNoise();
             }
             /*GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.2f);*/
-            checkForColor(allDots[column, row], column, row);
+            checkForColor(allDots[column, row], column, row); // создаем эффект в зависимости от цвета
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
+            
             //Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
     }
@@ -734,6 +743,7 @@ public class Board : MonoBehaviour
             }
         }
         //Debug.Log("End DestroyMatches, GameState = " + currentState);
+        findMatches.soundStripe = false;
         findMatches.currentMatches.Clear();
         debugLog("Очистить массив currentMatches", "");
         StartCoroutine(DecreaseRowCo2());
