@@ -61,19 +61,20 @@ public class Dot : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            isRowBomb = true;
-            GameObject prefabBooster = SearchNameForBooster("HeartRow"); // найденый обьект с помощью тега
-            GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
-            marker.transform.parent = this.transform;
-        }
         /*if (Input.GetMouseButtonDown(1))
         {
-            isColorBomb = true;
-            GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
-            color.transform.parent = this.transform;
+            isAdjacentBomb = true;
+            GameObject prefabBooster = SearchNameForBooster("adjacent"); // найденый обьект с помощью тега
+            GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
+            marker.transform.parent = this.transform;
         }*/
+        if (Input.GetMouseButtonDown(1))
+        {
+            isColorBomb = true;
+            GameObject prefabColorBomb = SearchNameForBooster("ColorBomb");
+            GameObject color = Instantiate(prefabColorBomb, transform.position, Quaternion.identity);
+            color.transform.parent = this.transform;
+        }
 
     }
 

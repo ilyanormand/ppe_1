@@ -10,12 +10,14 @@ public class FindMatches : MonoBehaviour
     private Board board;
     public List<GameObject> currentMatches = new List<GameObject>();
     public GameObject stripesEffect;
+    public GameObject AdjacentExplosion;
     public SoundManager soundManager;
     public bool soundStripe = false;
     void Start()
     {
         board = FindObjectOfType<Board>();
         stripesEffect = board.StripesBombExplosion;
+        AdjacentExplosion = board.AdjacentBombExplosion;
     }
 
     public void FindAllMatches() 
@@ -223,6 +225,9 @@ public class FindMatches : MonoBehaviour
                 }
             }
         }
+        GameObject adjacentEffect = Instantiate(AdjacentExplosion, board.allDots[column, row].transform.position, Quaternion.identity);
+
+        Destroy(adjacentEffect, 1f);
         return dots;
     }
 

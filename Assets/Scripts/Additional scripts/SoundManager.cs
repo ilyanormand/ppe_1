@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource stripeSoundRow;
     public AudioSource stripeSoundColumn;
     public AudioSource backcgroundMusic;
+    public AudioSource adjacentSound;
 
     private void Start()
     {
@@ -86,6 +87,10 @@ public class SoundManager : MonoBehaviour
             stripeSoundColumn.Play();
         }
 
+    }
 
-    } 
+    public void playAdjacentSound() 
+    {
+        
+    }
 }

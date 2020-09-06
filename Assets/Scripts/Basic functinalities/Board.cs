@@ -48,6 +48,7 @@ public class Board : MonoBehaviour
     public GameObject DonutExplosion, HeartExplosion, GreenBlopExplosion, RedSweetExplosion, StarExplosion, VioletExplosion;
     //эффекты взрывов для бомбочек
     public GameObject StripesBombExplosion, ColorBombExplosion, ColorBombTrails, AdjacentBombExplosion;
+    
  
 
 
