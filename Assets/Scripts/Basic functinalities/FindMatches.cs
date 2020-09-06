@@ -13,6 +13,7 @@ public class FindMatches : MonoBehaviour
     public GameObject AdjacentExplosion;
     public SoundManager soundManager;
     public bool soundStripe = false;
+    public List<GameObject> listOfColorMatches;
     void Start()
     {
         board = FindObjectOfType<Board>();
@@ -183,6 +184,7 @@ public class FindMatches : MonoBehaviour
 
     public void MatchPiecesOfColors(string color) 
     {
+        listOfColorMatches = new List<GameObject>();
         board.debugLog("MatchPiecesOfColors", "---------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
         for (int i = 0; i < board.width; i++) 
@@ -197,6 +199,7 @@ public class FindMatches : MonoBehaviour
                     {
                         //Заматчить эти элементы
                         board.allDots[i, j].GetComponent<Dot>().isMatched = true;
+                        listOfColorMatches.Add(board.allDots[i, j]);
                     }
                 }
             }

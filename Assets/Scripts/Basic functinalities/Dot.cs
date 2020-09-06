@@ -30,12 +30,14 @@ public class Dot : MonoBehaviour
     public bool isColumnBomb, isRowBomb, isColorBomb, isAdjacentBomb;
     //public GameObject AdjacentMarker, rowArrow, columnArrow, colorBomb;
     public GameObject[] listOfBoosters;
+    private ColorBombEffect colorBombEffect;
 
     [Header("Для тестов")]
     public GameObject fruit;
     public bool notTutorial;
     void Start()
     {
+        colorBombEffect = FindObjectOfType<ColorBombEffect>();
         tutorial = FindObjectOfType<Tutorial>();
         endGameManager = FindObjectOfType<EndGameManager>();
         isColumnBomb = false;
@@ -249,7 +251,6 @@ public class Dot : MonoBehaviour
         
     }
 
-    // если нету матчей то функция возращает элемент в пердыдущию позицию
     public IEnumerator CheckMoveCo() 
     {
         board.debugLog("CheckMoveCo()","------------");
@@ -258,13 +259,22 @@ public class Dot : MonoBehaviour
             board.debugLog("isColorBomb = " + isColorBomb.ToString(), "");
             //этот элемент это молния, а другой элемент это элемент который нужно уничтожить
             findMatches.MatchPiecesOfColors(otherDot.tag);
+            Debug.Log("ColorBombEffect = " + colorBombEffect);
+            
+            
             isMatched = true;
+            colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
             board.debugLog("isMatched = " + isMatched.ToString(), "");
         } else if (otherDot.GetComponent<Dot>().isColorBomb) 
         {
             //этот элемент это элемент который нужно уничтожить, а другой элемент это молния
             findMatches.MatchPiecesOfColors(this.gameObject.tag);
+            
+            
+            Debug.Log("ColorBombEffect = " + colorBombEffect);
             otherDot.GetComponent<Dot>().isMatched = true;
+            colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
+
         }
         yield return new WaitForSeconds(.5f); // пауза 
         if (otherDot != null)
