@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorBombEffect : MonoBehaviour
 {
     public GameObject colorBombEffect;
+    public LightningBoltScript lightEffectPrefab;
     public float smoothing = .5f;
     public SoundManager soundManager;
     // Start is called before the first frame update
@@ -29,18 +30,27 @@ public class ColorBombEffect : MonoBehaviour
     { 
         foreach (GameObject i in ListOfMatches)
         {
-            Debug.Log("Instantiate effect color bomb");
-            GameObject effect = Instantiate(colorBombEffect, positionToGenerate, Quaternion.identity);
-            soundManager.playColorSound();
-            Debug.Log("effect = " + effect);
-            Vector2 positionOfMatch = new Vector2(i.transform.position.x, i.transform.position.y);
-            Debug.Log("positionOfMatch = " + positionOfMatch);
-            //effect.transform.position = Vector2.Lerp(effect.transform.position, positionOfMatch, smoothing * Time.deltaTime);
-            effect.transform.position = new Vector2(positionOfMatch.x, positionOfMatch.y);
-            Debug.Log("startPosition = " + effect.transform);
-            float randomTime = Random.Range(0.05f, 0.1f);
-            yield return new WaitForSeconds(randomTime);
-            Destroy(effect, 1f);
+            if (i != null) 
+            {
+                //Debug.Log("Instantiate effect color bomb");
+                LightningBoltScript lightEffect = Instantiate(lightEffectPrefab, transform.position, Quaternion.identity);
+                lightEffect.StartPosition = positionToGenerate;
+                Debug.Log("Position to generate = " + positionToGenerate);
+                Vector3 positionOfMatch = new Vector3(i.transform.position.x, i.transform.position.y, 0);
+                lightEffect.EndPosition = positionOfMatch;
+                Debug.Log("Position of match = " + positionOfMatch);
+                yield return new WaitForSeconds(0.03f);
+                Destroy(lightEffect);
+                GameObject effect = Instantiate(colorBombEffect, positionToGenerate, Quaternion.identity);
+                soundManager.playColorSound();
+                effect.transform.position = new Vector2(positionOfMatch.x, positionOfMatch.y);
+                float randomTime = Random.Range(0.03f, 0.7f);
+                yield return new WaitForSeconds(randomTime);
+                Destroy(effect, 1f);
+                Destroy(lightEffect);
+
+            }
+            
         }
         
     }
