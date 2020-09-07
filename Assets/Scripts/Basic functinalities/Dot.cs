@@ -260,20 +260,18 @@ public class Dot : MonoBehaviour
             //этот элемент это молния, а другой элемент это элемент который нужно уничтожить
             findMatches.MatchPiecesOfColors(otherDot.tag);
             Debug.Log("ColorBombEffect = " + colorBombEffect);
-            
-            
             isMatched = true;
             colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
+            yield return new WaitForSeconds(1f);
             board.debugLog("isMatched = " + isMatched.ToString(), "");
         } else if (otherDot.GetComponent<Dot>().isColorBomb) 
         {
             //этот элемент это элемент который нужно уничтожить, а другой элемент это молния
             findMatches.MatchPiecesOfColors(this.gameObject.tag);
-            
-            
             Debug.Log("ColorBombEffect = " + colorBombEffect);
             otherDot.GetComponent<Dot>().isMatched = true;
             colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
+            yield return new WaitForSeconds(1f);
 
         }
         yield return new WaitForSeconds(.5f); // пауза 

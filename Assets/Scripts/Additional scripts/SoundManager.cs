@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource stripeSoundColumn;
     public AudioSource backcgroundMusic;
     public AudioSource adjacentSound;
+    public AudioSource ColorBombSound;
 
     private void Start()
     {
@@ -91,6 +92,11 @@ public class SoundManager : MonoBehaviour
 
     public void playAdjacentSound() 
     {
-        
+        adjacentSound.Play();
+    }
+
+    public void playColorSound() 
+    {
+        ColorBombSound.Play();
     }
 }
