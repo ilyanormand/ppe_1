@@ -968,7 +968,7 @@ public class Board : MonoBehaviour
         {
             //debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
             streakValue++;
-            yield return new WaitForSeconds(.7f);
+            //yield return new WaitForSeconds(.7f);
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay);
         }

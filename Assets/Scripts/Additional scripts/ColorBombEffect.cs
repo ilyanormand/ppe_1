@@ -27,28 +27,33 @@ public class ColorBombEffect : MonoBehaviour
     }
 
     public IEnumerator GeneratingParticles(List<GameObject> ListOfMatches, Vector3 positionToGenerate) 
-    { 
+    {
+        
         foreach (GameObject i in ListOfMatches)
         {
+
             if (i != null) 
             {
                 //Debug.Log("Instantiate effect color bomb");
-                LightningBoltScript lightEffect = Instantiate(lightEffectPrefab, transform.position, Quaternion.identity);
+                LightningBoltScript lightEffect = Instantiate(lightEffectPrefab, positionToGenerate, Quaternion.identity);
+                Debug.Log("lightEffect = " + lightEffect);
+                lightEffect.transform.parent = gameObject.transform;
                 lightEffect.StartPosition = positionToGenerate;
+                Debug.Log("StartPosition = " + lightEffect.StartPosition);
                 Debug.Log("Position to generate = " + positionToGenerate);
                 Vector3 positionOfMatch = new Vector3(i.transform.position.x, i.transform.position.y, 0);
                 lightEffect.EndPosition = positionOfMatch;
+                //soundManager.playLightSound();
+                Debug.Log("EndPosition = " + lightEffect.EndPosition);
                 Debug.Log("Position of match = " + positionOfMatch);
                 yield return new WaitForSeconds(0.03f);
-                Destroy(lightEffect);
+                Destroy(lightEffect.gameObject);
                 GameObject effect = Instantiate(colorBombEffect, positionToGenerate, Quaternion.identity);
                 soundManager.playColorSound();
                 effect.transform.position = new Vector2(positionOfMatch.x, positionOfMatch.y);
-                float randomTime = Random.Range(0.03f, 0.7f);
+                float randomTime = Random.Range(0.03f, 0.07f);
                 yield return new WaitForSeconds(randomTime);
                 Destroy(effect, 1f);
-                Destroy(lightEffect);
-
             }
             
         }

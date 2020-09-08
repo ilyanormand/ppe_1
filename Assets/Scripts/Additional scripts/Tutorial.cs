@@ -14,11 +14,11 @@ public class Tutorial : MonoBehaviour
     {
         hintManager = FindObjectOfType<HintManager>();
         dot = FindObjectOfType<Dot>();
-        tutorialShow = true;
+        tutorialShow = false;
         dot.notTutorial = false;
         if (level == 1) 
         {
-            tutorialShow = false;
+            tutorialShow = true;
         }
     }
 

@@ -123,7 +123,7 @@ public class FindMatches : MonoBehaviour
     {
         board.debugLog("FindAllMatchesCo()", "------------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
-        yield return new WaitForSeconds(.1f); // пауза 0,2 секунды
+        yield return new WaitForSeconds(.05f); // пауза 0,2 секунды
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 

@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource backcgroundMusic;
     public AudioSource adjacentSound;
     public AudioSource ColorBombSound;
+    //public AudioSource LightSound;
 
     private void Start()
     {
@@ -99,4 +100,9 @@ public class SoundManager : MonoBehaviour
     {
         ColorBombSound.Play();
     }
+
+    /*public void playLightSound()
+    {
+        LightSound.Play();
+    }*/
 }
