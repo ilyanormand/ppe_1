@@ -18,7 +18,7 @@ public class Tutorial : MonoBehaviour
         dot.notTutorial = false;
         if (level == 1) 
         {
-            tutorialShow = true;
+            tutorialShow = false;
         }
     }
 

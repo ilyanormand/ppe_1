@@ -123,7 +123,7 @@ public class FindMatches : MonoBehaviour
     {
         board.debugLog("FindAllMatchesCo()", "------------");
         board.debugLog("GameState = " + board.currentState.ToString(), "");
-        yield return new WaitForSeconds(.05f); // пауза 0,2 секунды
+        yield return new WaitForSeconds(.1f); // пауза 0,2 секунды
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 
@@ -251,9 +251,13 @@ public class FindMatches : MonoBehaviour
                 
             }
         }
-        GameObject stripeRow = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.Euler(0f, 0f, 90f));
-        soundManager.playStripeSound("column");
-        Destroy(stripeRow, 0.3f);
+        if (board.currentDot != null) 
+        {
+            GameObject stripeRow = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.Euler(0f, 0f, 90f));
+            soundManager.playStripeSound("column");
+            Destroy(stripeRow, 0.3f);
+        }
+        
         return dots;
     }
 
@@ -275,10 +279,14 @@ public class FindMatches : MonoBehaviour
                 
             }
         }
-        GameObject stripeColumn = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.identity);
-        soundStripe = true;
-        soundManager.playStripeSound("row");
-        Destroy(stripeColumn, 0.3f);
+        if (board.currentDot != null) 
+        {
+            GameObject stripeColumn = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.identity);
+            soundStripe = true;
+            soundManager.playStripeSound("row");
+            Destroy(stripeColumn, 0.3f);
+        }
+        
         return dots;
     }
 
@@ -300,7 +308,7 @@ public class FindMatches : MonoBehaviour
             {
                 // сделать бомбу которая взрывает горизонтальный ряд
                 Debug.Log("We will create a row bomb");
-                board.currentDot.MakeRowBomb();
+                board.currentDot.MakeRowBomb(board.currentDot);
             }
             else if (typeOfBomb >= 50)
             {

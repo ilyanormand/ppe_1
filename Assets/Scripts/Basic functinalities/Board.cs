@@ -42,6 +42,7 @@ public class Board : MonoBehaviour
     public GameObject breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
     [Space(20)]
     public GameObject[] dots;// массив где будут храниться элементы игры матч 3
+    public Dot thisDot;
 
     [Header("Prefabs for explosion effects")]
     // обычные эффекты взрывов разных элементов
@@ -71,7 +72,6 @@ public class Board : MonoBehaviour
     public float refillDelay;
     public int[] ScoreGoals;
     private bool makeSlime = true;
-
     [Header("for debuging")]
     public bool debug = true;
 
@@ -116,6 +116,7 @@ public class Board : MonoBehaviour
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         SetUp(); // Генерация таблицы
+       
 
     }
 
@@ -390,23 +391,28 @@ public class Board : MonoBehaviour
             {
                 debugLog("В колонке или ряде при матче 5 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
+                thisDot.MakeColorBomb(thisDot);
                 return 1;
             }
             if (columnMatch == 2 && rowMatch == 2)
             {
                 debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
+                thisDot.AdjacentBomb(thisDot);
                 return 2;
             }else if (columnMatch == 5 || rowMatch == 5)
             {
-                debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
+                debugLog("В колонке или ряде при матче 6 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
+                thisDot.AdjacentBomb(thisDot);
                 return 2;
             }
             if (columnMatch == 3 || rowMatch == 3) 
             {
                 debugLog("В колонке или ряде при матче 4 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
+                Debug.Log("currentDot == null");
+                thisDot.MakeRowBomb(thisDot);
                 return 3;
             }
         }
@@ -460,7 +466,7 @@ public class Board : MonoBehaviour
                             debugLog("Элемент сдвига не является colorBomb", "");
                             currentDot.isMatched = false;
                             debugLog("currentDot.Ismatched теперь равен false", "");
-                            currentDot.MakeColorBomb();
+                            currentDot.MakeColorBomb(currentDot);
                             debugLog("Запуск функции создания цветной бомбы", "---------------");
                         }
                     }
@@ -478,7 +484,7 @@ public class Board : MonoBehaviour
                                     debugLog("otherDot  не является colorBomb", "");
                                     otherDot.isMatched = false;
                                     debugLog("otherDot.isMatched = false", "");
-                                    otherDot.MakeColorBomb();
+                                    otherDot.MakeColorBomb(currentDot);
                                     debugLog("Запуск функции создания цветной бомбы", "---------------");
                                 }
                             }
@@ -499,7 +505,7 @@ public class Board : MonoBehaviour
                             debugLog("Элемент сдвига не является colorBomb", "");
                             currentDot.isMatched = false;
                             debugLog("currentDot.isMatched = false", "");
-                            currentDot.AdjacentBomb();
+                            currentDot.AdjacentBomb(currentDot);
                             debugLog("Запуск функции создания splash Bomb", "---------------");
                         }
                     }
@@ -516,7 +522,7 @@ public class Board : MonoBehaviour
                                     debugLog("otherDot не является splashBomb", "");
                                     otherDot.isMatched = false;
                                     debugLog("otherDot.isMatched = false", "");
-                                    otherDot.AdjacentBomb();
+                                    otherDot.AdjacentBomb(otherDot);
                                     debugLog("Запуск функции создания splash bomb", "---------------");
                                 }
                             }
@@ -634,17 +640,22 @@ public class Board : MonoBehaviour
         }
     }
     // уничтожение заматченых элементов
-    private void DestroyMatchesAt(int column, int row) 
+    private void DestroyMatchesAt(int column, int row, Dot thisDot) 
     {
         //Debug.Log("Start DestroyMatchesAt(), GameState = " + currentState);
         debugLog("Запуск функции уничтожение матчей", "--->");
         if (allDots[column, row].GetComponent<Dot>().isMatched) 
         {
             //узнать сколько заматченых элементов
-            if (findMatches.currentMatches.Count >= 4) 
+            if (findMatches.currentMatches.Count >= 4)
             {
+                Debug.Log("Заматченных элементов >= 4, currentMatches = " + findMatches.currentMatches.Count);
                 debugLog("Заматченых элементов больше чем 3: ", findMatches.currentMatches.Count.ToString());
                 CheckToMakeBombs();
+            }
+            else 
+            {
+                Debug.Log("Заматченных элементов < 4, currentMatches = " + findMatches.currentMatches.Count);
             }
 
             // проверка на необходимость уничтожение плитки
@@ -684,9 +695,13 @@ public class Board : MonoBehaviour
             /*GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.2f);*/
             checkForColor(allDots[column, row], column, row); // создаем эффект в зависимости от цвета
+            Debug.Log("thisDot in DestroyMatches = " + thisDot);
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
+            
+            
+            
             
             //Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
@@ -739,7 +754,7 @@ public class Board : MonoBehaviour
             {
                 if (allDots[i, j] != null) 
                 {
-                    DestroyMatchesAt(i, j);
+                    DestroyMatchesAt(i, j, thisDot);
                 }
             }
         }
@@ -964,14 +979,18 @@ public class Board : MonoBehaviour
         //debugLog("Запуск основной функции заполнения таблицы FillBoardCo", "------------");
         RefilBoard();
         yield return new WaitForSeconds(refillDelay);
-        while (MatchesOnBoard())
+        if (currentState != GameState.win) 
         {
-            //debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
-            streakValue++;
-            //yield return new WaitForSeconds(.7f);
-            DestroyMatches();
-            yield return new WaitForSeconds(refillDelay);
+            while (MatchesOnBoard())
+            {
+                //debugLog("Еще есть матчи в таблице:", MatchesOnBoard().ToString());
+                streakValue++;
+                yield return new WaitForSeconds(.7f);
+                DestroyMatches();
+                yield return new WaitForSeconds(refillDelay);
+            }
         }
+        
         //Debug.Log(MatchesOnBoard());
         findMatches.currentMatches.Clear();
         //debugLog("Кончились матчи в таблице", "---> очистить массив currentMatches");

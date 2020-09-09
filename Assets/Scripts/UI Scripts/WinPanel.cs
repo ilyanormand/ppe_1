@@ -19,6 +19,9 @@ public class WinPanel : MonoBehaviour
     public Text highScoreText;
     void OnEnable()
     {
+        board = FindObjectOfType<Board>();
+        board.currentState = GameState.win;
+        Debug.Log("board.currentState = " + board.currentState);
         scoreManager = FindObjectOfType<ScoreManager>();
         board = FindObjectOfType<Board>();
         //Debug.Log("board = " + board);

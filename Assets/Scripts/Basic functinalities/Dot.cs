@@ -90,8 +90,12 @@ public class Dot : MonoBehaviour
             if (board != null)
             {
                 yield return new WaitForSeconds(1.5f);
-                board.DestroyMatches();
-                board.debugLog("Матчи были уничтожены", "");
+                if (board.currentState != GameState.win) 
+                {
+                    board.DestroyMatches();
+                    board.debugLog("Матчи были уничтожены", "");
+                }
+                
             }
         }
         board.debugLog("GameState = " + board.currentState.ToString(), "");
@@ -300,8 +304,12 @@ public class Dot : MonoBehaviour
                         board.debugLog("GameState = " + board.currentState.ToString(), "");
                     }
                 }
-                board.DestroyMatches(); // уничтожить заматченые элементы
-                board.debugLog("GameState = " + board.currentState.ToString(), "-----------------");
+                if (board.currentState != GameState.win) 
+                {
+                    board.DestroyMatches(); // уничтожить заматченые элементы
+                    board.debugLog("GameState = " + board.currentState.ToString(), "-----------------");
+                }
+                
             }
             //otherDot = null;
         }
@@ -362,19 +370,44 @@ public class Dot : MonoBehaviour
         return null;
     }
 
-    public void MakeRowBomb() 
+    public void MakeRowBomb(Dot thisDot) 
     {
         if (isColumnBomb == false && isColorBomb == false && isAdjacentBomb == false)
         {
             board.debugLog("Make Column bomb", "");
-            string prefabName = board.currentDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
-            GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
-            if (prefabBooster != null) 
+            Debug.Log("Make Column bomb");
+            if (board.currentDot != null)
             {
-                GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
-                arrow.transform.parent = this.transform;
-                isRowBomb = true;
+                Debug.Log("current dot != null");
+                string prefabName = board.currentDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
+                GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
+                if (prefabBooster != null)
+                {
+                    GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
+                    arrow.transform.parent = thisDot.transform;
+                    isRowBomb = true;
+                }
             }
+            else 
+            {
+                Debug.Log("thisDot Search");
+                string prefabName = thisDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
+                Debug.Log("thisDot.tag = " + thisDot.tag);
+                GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
+                if (prefabBooster != null)
+                {
+                    
+                    thisDot.isMatched = false;
+                    Debug.Log("thisDot = " + thisDot);
+                    Debug.Log("thisDotP position = " + thisDot.transform.position);
+                    Debug.Log("Dot transform position = " + transform.position);
+                    GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
+                    Debug.Log("bomb = " + arrow);
+                    arrow.transform.parent = this.transform;
+                    isRowBomb = true;
+                }
+            }
+            
             
         }   
     }
@@ -383,6 +416,7 @@ public class Dot : MonoBehaviour
     {
         if (isRowBomb == false && isColorBomb == false && isAdjacentBomb == false) 
         {
+            Debug.Log("Make Column bomb");
             board.debugLog("Make Column bomb", "");
             string prefabName = board.currentDot.tag + "Column";
             GameObject prefabBooster = SearchNameForBooster(prefabName);
@@ -391,40 +425,58 @@ public class Dot : MonoBehaviour
                 GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity);
                 arrow.transform.parent = this.transform;
                 isColumnBomb = true;
+                
             }
         }
     }
 
-    public void MakeColorBomb()
+    public void MakeColorBomb(Dot thisDot)
     {
         if (isColumnBomb == false && isRowBomb == false && isAdjacentBomb == false) 
         {
-            board.debugLog("Make Color bomb", "");
+            Debug.Log("Make Column bomb");
+            //board.debugLog("Make Color bomb", "");
             string prefabName = "ColorBomb";
             GameObject prefabBooster = SearchNameForBooster(prefabName);
             if (prefabBooster != null)
             {
-                GameObject color = Instantiate(prefabBooster, transform.position, Quaternion.identity);
+                
+                thisDot.isMatched = false;
+                Debug.Log("thisDot = " + thisDot);
+                Debug.Log("thisDotP position = " + thisDot.transform.position);
+                Debug.Log("Dot transform position = " + transform.position);
+                GameObject color = Instantiate(prefabBooster, thisDot.transform.position, Quaternion.identity);
+                Debug.Log("bomb = " + color);
                 color.transform.parent = this.transform;
-                this.gameObject.tag = "Color";
+                thisDot.gameObject.tag = "Color";
                 isColorBomb = true;
             }
         }
         
     }
 
-    public void AdjacentBomb()
+    public void AdjacentBomb(Dot thisDot)
     {
         if (isColumnBomb == false && isRowBomb == false && isColorBomb == false) 
         {
+            Debug.Log("Make Column bomb");
             board.debugLog("Make adjacent bomb", "");
             string prefabName = "adjacentBomb";
             GameObject prefabBooster = SearchNameForBooster(prefabName);
             if (prefabBooster != null)
             {
-                GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity);
-                marker.transform.parent = this.transform;
-                isAdjacentBomb = true;
+                thisDot.isMatched = false;
+                Debug.Log("thisDot = " + thisDot);
+                Debug.Log("thisDotP position = " + thisDot.transform.position);
+                Debug.Log("Dot transform position = " + transform.position);
+                if (isAdjacentBomb == false) 
+                {
+                    GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity);
+                    Debug.Log("bomb = " + marker);
+                    marker.transform.parent = this.transform;
+                    isAdjacentBomb = true;
+                }
+                
             }
         }
         
