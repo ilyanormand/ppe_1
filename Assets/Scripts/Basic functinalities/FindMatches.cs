@@ -253,9 +253,37 @@ public class FindMatches : MonoBehaviour
         }
         if (board.currentDot != null) 
         {
-            GameObject stripeRow = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.Euler(0f, 0f, 90f));
-            soundManager.playStripeSound("column");
-            Destroy(stripeRow, 0.3f);
+            if (currentMatches != null) 
+            {
+                GameObject[] stripeObjects = GameObject.FindGameObjectsWithTag("columnBomb");
+                foreach (GameObject element in currentMatches)
+                {
+                    /*Debug.Log("Startitng searching bombColumn in currentMatches");
+                    Debug.Log("CurrentMatches count = " + currentMatches.Count);
+                    Debug.Log("StripeObject.tag = " + stripeObjcet.tag);
+                    if (stripeObjcet.tag == "columnBomb")
+                    {
+                        Debug.Log("StripeObject.tag = " + stripeObjcet.tag);
+                        GameObject stripeColumn = Instantiate(stripesEffect, stripeObjcet.transform.position, Quaternion.Euler(0f, 0f, 0f));
+                        Debug.Log("stripeColumn = " + stripeColumn);
+                        soundManager.playStripeSound("column");
+                        Destroy(stripeColumn, 0.3f);
+                    }*/
+
+                    foreach (GameObject stripe in stripeObjects) 
+                    {
+                        if (stripe.transform.position == element.transform.position) 
+                        {
+                            GameObject stripeColumn = Instantiate(stripesEffect, element.transform.position, Quaternion.Euler(0f, 0f, 90f));
+                            soundManager.playStripeSound("column");
+                            Destroy(stripeColumn, 0.3f);
+                        }
+                        
+                    }
+                }
+            }
+            
+            
         }
         
         return dots;
@@ -281,10 +309,35 @@ public class FindMatches : MonoBehaviour
         }
         if (board.currentDot != null) 
         {
-            GameObject stripeColumn = Instantiate(stripesEffect, board.currentDot.transform.position, Quaternion.identity);
-            soundStripe = true;
-            soundManager.playStripeSound("row");
-            Destroy(stripeColumn, 0.3f);
+            if (currentMatches != null) 
+            {
+                GameObject[] stripeObjects = GameObject.FindGameObjectsWithTag("rowBomb");
+                foreach (GameObject element in currentMatches)
+                {
+                    /*Debug.Log("Startitng searching bombRow in currentMatches");
+                    Debug.Log("CurrentMatches count = " + currentMatches.Count);
+                    Debug.Log("StripeObject.tag = " + stripeObjcet.tag);
+                    if (stripeObjcet.tag == "rowBomb")
+                    {
+                        Debug.Log("StripeObject.tag = " + stripeObjcet.tag);
+                        GameObject stripeRow = Instantiate(stripesEffect, stripeObjcet.transform.position, Quaternion.Euler(0f, 0f, 90f));
+                        Debug.Log("stripeRow = " + stripeRow);
+                        soundManager.playStripeSound("row");
+                        Destroy(stripeRow, 0.3f);
+                    }*/
+                    foreach (GameObject stripe in stripeObjects) 
+                    {
+                        if (stripe.transform.position == element.transform.position) 
+                        {
+                            GameObject stripeRow = Instantiate(stripesEffect, element.transform.position, Quaternion.Euler(0f, 0f, 0f));
+                            //Debug.Log("stripeRow = " + stripeRow);
+                            soundManager.playStripeSound("row");
+                            Destroy(stripeRow, 0.3f);
+                        }
+                    }
+                    
+                }
+            }
         }
         
         return dots;
@@ -307,12 +360,12 @@ public class FindMatches : MonoBehaviour
             if (typeOfBomb < 50)
             {
                 // сделать бомбу которая взрывает горизонтальный ряд
-                Debug.Log("We will create a row bomb");
+                //Debug.Log("We will create a row bomb");
                 board.currentDot.MakeRowBomb(board.currentDot);
             }
             else if (typeOfBomb >= 50)
             {
-                Debug.Log("We will create a column bomb");
+                //Debug.Log("We will create a column bomb");
                 // сделать бомбу которая взрывает вертикальный ряд
                 board.currentDot.MakeColumnBomb();
             }

@@ -649,13 +649,13 @@ public class Board : MonoBehaviour
             //узнать сколько заматченых элементов
             if (findMatches.currentMatches.Count >= 4)
             {
-                Debug.Log("Заматченных элементов >= 4, currentMatches = " + findMatches.currentMatches.Count);
+                //Debug.Log("Заматченных элементов >= 4, currentMatches = " + findMatches.currentMatches.Count);
                 debugLog("Заматченых элементов больше чем 3: ", findMatches.currentMatches.Count.ToString());
                 CheckToMakeBombs();
             }
             else 
             {
-                Debug.Log("Заматченных элементов < 4, currentMatches = " + findMatches.currentMatches.Count);
+                //Debug.Log("Заматченных элементов < 4, currentMatches = " + findMatches.currentMatches.Count);
             }
 
             // проверка на необходимость уничтожение плитки
@@ -695,7 +695,7 @@ public class Board : MonoBehaviour
             /*GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.2f);*/
             checkForColor(allDots[column, row], column, row); // создаем эффект в зависимости от цвета
-            Debug.Log("thisDot in DestroyMatches = " + thisDot);
+            //Debug.Log("thisDot in DestroyMatches = " + thisDot);
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
@@ -885,6 +885,7 @@ public class Board : MonoBehaviour
                             //Передвинуть данный желмент в пустое пространство
                             allDots[i, k].GetComponent<Dot>().row = j;
                             allDots[i, k] = null;
+                            allDots[i, k].GetComponent<Animator>().Play();
                             break;
                          }
                     }
