@@ -5,11 +5,14 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public AudioSource[] destroyPieceSound;
+    public AudioSource DropSound;
     public AudioSource stripeSoundRow;
     public AudioSource stripeSoundColumn;
     public AudioSource backcgroundMusic;
     public AudioSource adjacentSound;
     public AudioSource ColorBombSound;
+    public AudioSource[] StarsSound;
+
     //public AudioSource LightSound;
 
     private void Start()
@@ -105,4 +108,26 @@ public class SoundManager : MonoBehaviour
     {
         LightSound.Play();
     }*/
+
+    public void FallingPiecesSound() 
+    {
+        DropSound.Play();
+    }
+
+    public void PlayStarsAppear(int starNumber) 
+    {
+        if (starNumber == 0)
+        {
+            StarsSound[0].Play();
+        }
+        else if(starNumber == 1) 
+        {
+            StarsSound[1].Play();
+        }
+        else if (starNumber == 2)
+        {
+            StarsSound[2].Play();
+        }
+
+    }
 }

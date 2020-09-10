@@ -229,6 +229,7 @@ public class FindMatches : MonoBehaviour
             }
         }
         GameObject adjacentEffect = Instantiate(AdjacentExplosion, board.allDots[column, row].transform.position, Quaternion.identity);
+        soundManager.playAdjacentSound();
 
         Destroy(adjacentEffect, 1f);
         return dots;

@@ -70,13 +70,13 @@ public class Dot : MonoBehaviour
             GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
             marker.transform.parent = this.transform;
         }*/
-        if (Input.GetMouseButtonDown(1))
+        /*if (Input.GetMouseButtonDown(1))
         {
             isColorBomb = true;
             GameObject prefabColorBomb = SearchNameForBooster("ColorBomb");
             GameObject color = Instantiate(prefabColorBomb, transform.position, Quaternion.identity);
             color.transform.parent = this.transform;
-        }
+        }*/
 
     }
 

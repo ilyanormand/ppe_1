@@ -889,6 +889,7 @@ public class Board : MonoBehaviour
                             Debug.Log("child =" + child);
                             child.GetComponent<Animator>().enabled =true;
                             child.GetComponent<Animator>().Play("DotFakk");
+                            soundManager.FallingPiecesSound();
                             allDots[i, k] = null;
                             break;
                          }

@@ -12,6 +12,7 @@ public class WinPanel : MonoBehaviour
     public GameObject fadePanel; // обьект fadePanel который будет затемнятся при активации winPanel
     public GameObject backgroundWinPanel; // обькет который будет затеменять экран при активации win panel\
     public ScoreManager scoreManager; // создаем обьект с классом ScoreManager
+    private SoundManager soundManager;
     private Board board;
 
     [Header("UI stuff")]
@@ -47,8 +48,30 @@ public class WinPanel : MonoBehaviour
 
     private void Start()
     {
+        soundManager = FindObjectOfType<SoundManager>();
         SetText();
-        ActivateStars();
+        //ActivateStars();
+        StartCoroutine(ActivateStarsCo());
+    }
+
+    private IEnumerator ActivateStarsCo() 
+    {
+        for (int i = 0; i < board.ScoreGoals.Length; i++)
+        {
+            if (scoreManager.score >= board.ScoreGoals[i])
+            {
+                yield return new WaitForSeconds(0.5f);
+                stars[i].SetActive(true);
+                soundManager.PlayStarsAppear(i);
+                yield return new WaitForSeconds(1f);
+                //Debug.Log("stars["+i+"].enabled = " + stars[i].enabled);
+            }
+            else
+            {
+                //Debug.Log("Not enough of score to have " + i + " star");
+                break;
+            }
+        }
     }
     private void ActivateStars() 
     {
