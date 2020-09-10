@@ -884,8 +884,12 @@ public class Board : MonoBehaviour
                          {
                             //Передвинуть данный желмент в пустое пространство
                             allDots[i, k].GetComponent<Dot>().row = j;
+                            //allDots[i, k].GetComponentInChildren<Animator>().enabled = true;
+                            GameObject child = allDots[i, k].transform.Find("body").gameObject;
+                            Debug.Log("child =" + child);
+                            child.GetComponent<Animator>().enabled =true;
+                            child.GetComponent<Animator>().Play("DotFakk");
                             allDots[i, k] = null;
-                            allDots[i, k].GetComponent<Animator>().Play();
                             break;
                          }
                     }
