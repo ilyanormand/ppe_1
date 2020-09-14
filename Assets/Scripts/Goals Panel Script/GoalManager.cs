@@ -21,8 +21,11 @@ public class GoalManager : MonoBehaviour
     public GameObject goalGameParent;
     private EndGameManager endGame;
     private Board board;
+    private FindMatches findMatches;
+    public bool WinState = false;
     void Start()
     {
+        findMatches = FindObjectOfType<FindMatches>();
         board = FindObjectOfType<Board>();
         endGame = FindObjectOfType<EndGameManager>();
         GetGoals();
@@ -85,10 +88,14 @@ public class GoalManager : MonoBehaviour
             }
             if (goalsCompleted >= levelGoals.Length) 
             {
+                /*Debug.Log("current Matches in UpdateGoals() = " + findMatches.currentMatches.Count);
+                Debug.Log("board.current state in UpdateGoals() = " + board.currentState);*/
                 if (endGame != null) 
                 {
-                    endGame.WinGame();
-                    Debug.Log("You win");
+                    Debug.Log("endGame.WinGame()");
+                    WinState = true;
+                    //endGame.WinGame();
+                    Debug.Log("You win");                   
                 }
                 
             }

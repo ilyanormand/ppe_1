@@ -24,9 +24,13 @@ public class EndGameManager : MonoBehaviour
     public int currentCounterValue;
     private float timerSeconds;
     private Board board;
+    private FindMatches findMatches;
+    private GoalManager goalManager;
     void Start()
     {
         board = FindObjectOfType<Board>();
+        goalManager = FindObjectOfType<GoalManager>();
+        findMatches = FindObjectOfType<FindMatches>();
         SetGameType();
         SetupGame();
     }
@@ -69,15 +73,12 @@ public class EndGameManager : MonoBehaviour
         {
             currentCounterValue--;
             counter.text = "" + currentCounterValue;
-            if (currentCounterValue <= 0)
-            {
-                LoseGame();
-            }
         }
 
     }
 
-    public void WinGame() 
+
+    /*public void WinGame() 
     {
         WinPanel.SetActive(true);
         board.currentState = GameState.wait;
@@ -85,22 +86,35 @@ public class EndGameManager : MonoBehaviour
         counter.text = "" + currentCounterValue;
         fadePanelController fade = FindObjectOfType<fadePanelController>();
         fade.GameOver();
-    }
+    }*/
 
-    public void LoseGame() 
+    public IEnumerator LoseGame() 
     {
-        TryAgainPanel.SetActive(true);
-        board.currentState = GameState.lose;
-        Debug.Log("you lose");
-        currentCounterValue = 0;
-        counter.text = "" + currentCounterValue;
-        fadePanelController fade = FindObjectOfType<fadePanelController>();
-        fade.GameOver();
+        
+        Debug.Log("current matches = " + findMatches.currentMatches.Count);
+        yield return new WaitForSeconds(1f);
+        if (findMatches.currentMatches.Count == 0 && board.currentState == GameState.move) 
+        {
+            yield return new WaitForSeconds(1f);
+            if (goalManager.WinState != true) 
+            {
+                board.currentState = GameState.lose;
+                Debug.Log("Activate loose panel");
+                TryAgainPanel.SetActive(true);
+                //Debug.Log("you lose");
+                currentCounterValue = 0;
+                counter.text = "" + currentCounterValue;
+                fadePanelController fade = FindObjectOfType<fadePanelController>();
+                fade.GameOver();
+            }
+            
+        }
+        
     }
     
     public void LevelRestart() 
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(board.level);
     }
 
     // Update is called once per frame
@@ -114,6 +128,48 @@ public class EndGameManager : MonoBehaviour
                 DecreaseCounterValue();
                 timerSeconds = 1;
             }
-        }   
+        }
+        if (currentCounterValue <= 0)
+        {
+            Debug.Log("Loose game");
+            StartCoroutine(LoseGame());
+        }
+        if (goalManager.WinState == true) 
+        {
+            StartCoroutine(CheckForWin());
+        }
     }
+
+    private IEnumerator CheckForWin() 
+    {
+        yield return new WaitForSeconds(1f);
+        if (findMatches.currentMatches.Count == 0 && board.currentState == GameState.move) 
+        {
+            yield return new WaitForSeconds(1f);
+            board.currentState = GameState.wait;
+            WinPanel.SetActive(true);
+            currentCounterValue = 0;
+            counter.text = "" + currentCounterValue;
+            fadePanelController fade = FindObjectOfType<fadePanelController>();
+            fade.GameOver();
+        }
+        
+    }
+    /*private IEnumerator checkForMatchesCo() 
+    {
+        yield
+        if (findMatches.currentMatches.Count == 0 && currentCounterValue <= 0)
+        {
+            HaveMatchOnBoard = false;
+            Debug.Log("HaveMatchOnBoard = " + HaveMatchOnBoard);
+        }
+        else
+        {
+            HaveMatchOnBoard = true;
+            Debug.Log("HaveMatchOnBoard = " + HaveMatchOnBoard);
+        }
+
+        
+        
+    }*/
 }

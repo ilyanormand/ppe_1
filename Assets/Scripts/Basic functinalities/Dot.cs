@@ -70,13 +70,13 @@ public class Dot : MonoBehaviour
             GameObject marker = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
             marker.transform.parent = this.transform;
         }*/
-        /*if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             isColorBomb = true;
             GameObject prefabColorBomb = SearchNameForBooster("ColorBomb");
             GameObject color = Instantiate(prefabColorBomb, transform.position, Quaternion.identity);
             color.transform.parent = this.transform;
-        }*/
+        }
 
     }
 
@@ -150,7 +150,7 @@ public class Dot : MonoBehaviour
         // Уничтожить подсказку
         if (hintManager != null) 
         {
-            Debug.Log(hintManager.hint);
+            //Debug.Log(hintManager.hint);
             hintManager.DestroyHint();
         }
         
@@ -263,7 +263,7 @@ public class Dot : MonoBehaviour
             board.debugLog("isColorBomb = " + isColorBomb.ToString(), "");
             //этот элемент это молния, а другой элемент это элемент который нужно уничтожить
             findMatches.MatchPiecesOfColors(otherDot.tag);
-            Debug.Log("ColorBombEffect = " + colorBombEffect);
+            //Debug.Log("ColorBombEffect = " + colorBombEffect);
             isMatched = true;
             colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
             yield return new WaitForSeconds(1f);
@@ -272,7 +272,7 @@ public class Dot : MonoBehaviour
         {
             //этот элемент это элемент который нужно уничтожить, а другой элемент это молния
             findMatches.MatchPiecesOfColors(this.gameObject.tag);
-            Debug.Log("ColorBombEffect = " + colorBombEffect);
+            //Debug.Log("ColorBombEffect = " + colorBombEffect);
             otherDot.GetComponent<Dot>().isMatched = true;
             colorBombEffect.StartEffect(findMatches.listOfColorMatches, otherDot.transform.position);
             yield return new WaitForSeconds(1f);
@@ -366,7 +366,7 @@ public class Dot : MonoBehaviour
                 return prefab;
             }
         }
-        Debug.Log("There is not needed tag in the listOfBoosters");
+        //Debug.Log("There is not needed tag in the listOfBoosters");
         return null;
     }
 
@@ -392,7 +392,7 @@ public class Dot : MonoBehaviour
             {
                 //Debug.Log("thisDot Search");
                 string prefabName = thisDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
-                Debug.Log("thisDot.tag = " + thisDot.tag);
+                //Debug.Log("thisDot.tag = " + thisDot.tag);
                 GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
                 if (prefabBooster != null)
                 {
@@ -404,7 +404,7 @@ public class Dot : MonoBehaviour
                     if (isRowBomb == false) 
                     {
                         GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
-                        Debug.Log("bomb = " + arrow);
+                        //Debug.Log("bomb = " + arrow);
                         arrow.transform.parent = this.transform;
                         isRowBomb = true;
                     }
@@ -489,8 +489,8 @@ public class Dot : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+/*    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Fall detected");
-    }
+        //Debug.Log("Fall detected");
+    }*/
 }

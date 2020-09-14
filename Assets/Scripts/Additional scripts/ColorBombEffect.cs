@@ -21,7 +21,7 @@ public class ColorBombEffect : MonoBehaviour
             effect.transform.position = Vector2.Lerp(effect.transform.position, positionOfMatch, smoothing * Time.deltaTime);
             Debug.Log("startPosition = " + effect.transform);
         }*/
-        Debug.Log(matches.Count);
+        //Debug.Log(matches.Count);
 
         StartCoroutine(GeneratingParticles(matches, positionOfCreation));
     }
@@ -36,16 +36,16 @@ public class ColorBombEffect : MonoBehaviour
             {
                 //Debug.Log("Instantiate effect color bomb");
                 LightningBoltScript lightEffect = Instantiate(lightEffectPrefab, positionToGenerate, Quaternion.identity);
-                Debug.Log("lightEffect = " + lightEffect);
+                //Debug.Log("lightEffect = " + lightEffect);
                 lightEffect.transform.parent = gameObject.transform;
                 lightEffect.StartPosition = positionToGenerate;
-                Debug.Log("StartPosition = " + lightEffect.StartPosition);
-                Debug.Log("Position to generate = " + positionToGenerate);
+                //Debug.Log("StartPosition = " + lightEffect.StartPosition);
+                //Debug.Log("Position to generate = " + positionToGenerate);
                 Vector3 positionOfMatch = new Vector3(i.transform.position.x, i.transform.position.y, 0);
                 lightEffect.EndPosition = positionOfMatch;
                 //soundManager.playLightSound();
-                Debug.Log("EndPosition = " + lightEffect.EndPosition);
-                Debug.Log("Position of match = " + positionOfMatch);
+                //Debug.Log("EndPosition = " + lightEffect.EndPosition);
+                //Debug.Log("Position of match = " + positionOfMatch);
                 yield return new WaitForSeconds(0.03f);
                 Destroy(lightEffect.gameObject);
                 GameObject effect = Instantiate(colorBombEffect, positionToGenerate, Quaternion.identity);

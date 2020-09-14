@@ -85,6 +85,6 @@ public class GameData : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 }

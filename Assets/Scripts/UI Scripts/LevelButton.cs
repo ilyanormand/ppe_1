@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class LevelButton : MonoBehaviour
 {
     [Header("Active Stuff")]
@@ -88,7 +88,7 @@ public class LevelButton : MonoBehaviour
 
     public void ConfirmPanel(int level) 
     {
-        confirmPanel.GetComponent<ConfirmPanel>().level = level;
-        confirmPanel.SetActive(true);
+        PlayerPrefs.SetInt("Current Level", level);
+        SceneManager.LoadScene("Main");
     }
 }

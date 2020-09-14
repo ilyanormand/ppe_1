@@ -83,6 +83,7 @@ public class PauseManager : MonoBehaviour
     public void PauseGame() 
     {
         paused = !paused;
+        Debug.Log("Set to pause");
     }
 
     public void ExitGame() 

@@ -411,7 +411,7 @@ public class Board : MonoBehaviour
             {
                 debugLog("В колонке или ряде при матче 4 элемента", columnMatch.ToString());
                 debugLog("", rowMatch.ToString());
-                Debug.Log("currentDot == null");
+                //Debug.Log("currentDot == null");
                 thisDot.MakeRowBomb(thisDot);
                 return 3;
             }
@@ -886,7 +886,7 @@ public class Board : MonoBehaviour
                             allDots[i, k].GetComponent<Dot>().row = j;
                             //allDots[i, k].GetComponentInChildren<Animator>().enabled = true;
                             GameObject child = allDots[i, k].transform.Find("body").gameObject;
-                            Debug.Log("child =" + child);
+                            //Debug.Log("child =" + child);
                             child.GetComponent<Animator>().enabled =true;
                             child.GetComponent<Animator>().Play("DotFakk");
                             soundManager.FallingPiecesSound();
