@@ -12,10 +12,12 @@ public class ScoreManager : MonoBehaviour
     public Image scoreBar;
     private GameData gameData;
     private int numberStars;
+    private GoalManager goalManager;
     void Start()
     {
         board = FindObjectOfType<Board>();
         gameData = FindObjectOfType<GameData>();
+        goalManager = FindObjectOfType<GoalManager>();
     }
 
     // Update is called once per frame
@@ -32,7 +34,10 @@ public class ScoreManager : MonoBehaviour
         {
             if (score > board.ScoreGoals[i] && numberStars < i + 1) // если количество очков больше чем цель очков и при этом количество звезд не превышает макс число звезд то
             {
-                numberStars++; // добавляем звезду
+                if (goalManager.WinState == true) 
+                {
+                    numberStars++; // добавляем звезду
+                }
             }
         }
 

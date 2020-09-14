@@ -114,7 +114,7 @@ public class EndGameManager : MonoBehaviour
     
     public void LevelRestart() 
     {
-        SceneManager.LoadScene(board.level);
+        SceneManager.LoadScene("Main");
     }
 
     // Update is called once per frame
