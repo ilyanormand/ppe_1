@@ -101,28 +101,21 @@ public class FindMatches : MonoBehaviour
 
     private void AddToListAndMatch(GameObject dot) 
     {
-        board.debugLog("AddToListAndMatch()", "----------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
-        if (!currentMatches.Contains(dot)) // если нынешний матч не имеет левый элемент то добавить левый элемент
+        if (!currentMatches.Contains(dot)) // если нынешний матч не имеет элемент то добавить этот элемент
         {
             currentMatches.Add(dot);
-            board.debugLog("CurrentMatches = " + currentMatches.ToString(), "");
         }
         dot.GetComponent<Dot>().isMatched = true;
     }
 
     private void GetNearbyPieces(GameObject dot1, GameObject dot2, GameObject dot3) 
     {
-        board.debugLog("GetNearbyPieces()", "----------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
         AddToListAndMatch(dot1);
         AddToListAndMatch(dot2);
         AddToListAndMatch(dot3);
     }
     private IEnumerator FindAllmatchesCo()
     {
-        board.debugLog("FindAllMatchesCo()", "------------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
         yield return new WaitForSeconds(.1f); // пауза 0,2 секунды
         for (int i = 0; i < board.width; i++) 
         {
@@ -141,7 +134,7 @@ public class FindMatches : MonoBehaviour
                         {
                             Dot leftDotComponent = leftDot.GetComponent<Dot>();
                             Dot rightDotComponent = rightDot.GetComponent<Dot>();
-                            if (leftDot.tag == currenDot.tag && rightDot.tag == currenDot.tag) // проверка на матч
+                            if (leftDot.CompareTag(currenDot.tag) && rightDot.CompareTag(currenDot.tag)) // проверка на матч
                             {
                                 //проверка на бомбу
                                 currentMatches.Union(IsRowBomb(leftDotComponent, currentDotComponent, rightDotComponent));
@@ -164,7 +157,7 @@ public class FindMatches : MonoBehaviour
                         {
                             Dot upDotComponent = upDot.GetComponent<Dot>();
                             Dot downDotComponent = downDot.GetComponent<Dot>();
-                            if (upDot.tag == currenDot.tag && downDot.tag == currenDot.tag)
+                            if (upDot.CompareTag(currenDot.tag) && downDot.CompareTag(currenDot.tag))
                             {
                                 currentMatches.Union(IsColumnBomb(upDotComponent, currentDotComponent, downDotComponent));
 
@@ -185,8 +178,6 @@ public class FindMatches : MonoBehaviour
     public void MatchPiecesOfColors(string color) 
     {
         listOfColorMatches = new List<GameObject>();
-        board.debugLog("MatchPiecesOfColors", "---------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 
@@ -348,8 +339,6 @@ public class FindMatches : MonoBehaviour
 
     public void ChekcBombs() 
     {
-        board.debugLog("CheckBombs()", "-------------");
-        board.debugLog("GameState = " + board.currentState.ToString(), "");
         //Debug.Log("CheckBombs()");
         // проверка на то что двигал ли что то игрок
         if (board.currentDot != null) 
@@ -393,7 +382,6 @@ public class FindMatches : MonoBehaviour
                 }
             }*/
         }
-        board.debugLog("GameState = " + board.currentState.ToString(), "---------------");
     }
     
 }

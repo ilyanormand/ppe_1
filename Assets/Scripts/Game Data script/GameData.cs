@@ -50,7 +50,7 @@ public class GameData : MonoBehaviour
         formatter.Serialize(file, data);
         //close the data stream
         file.Close();
-        Debug.Log(data);
+        //Debug.Log(data);
     }
 
     public void load() 
@@ -63,7 +63,7 @@ public class GameData : MonoBehaviour
             FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Open);
             saveData = formatter.Deserialize(file) as SaveData;
             file.Close();
-            Debug.Log("saveData");
+            //Debug.Log("saveData");
         }
         else 
         {

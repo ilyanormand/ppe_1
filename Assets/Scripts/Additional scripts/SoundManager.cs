@@ -41,7 +41,6 @@ public class SoundManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Sound"))
         {
-            Debug.Log(PlayerPrefs.GetInt("Sound"));
             if (PlayerPrefs.GetInt("Sound") == 0)
             {
                 //Debug.Log(backcgroundMusic.volume);

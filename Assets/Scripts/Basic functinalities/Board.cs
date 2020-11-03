@@ -36,7 +36,8 @@ public class Board : MonoBehaviour
     public GameState currentState = GameState.move;
 
     [Header("Board Dimensions")]
-    public int width, offset, height;
+    public int width, height;
+    public float offset;
 
     [Header("Prefabs")]
     public GameObject breakableTilePrefab, tilePrefab, lockTilePrefab, concreteTilePrefab, chocolateTilePrefab;
@@ -49,8 +50,15 @@ public class Board : MonoBehaviour
     public GameObject DonutExplosion, HeartExplosion, GreenBlopExplosion, RedSweetExplosion, StarExplosion, VioletExplosion;
     //эффекты взрывов для бомбочек
     public GameObject StripesBombExplosion, ColorBombExplosion, ColorBombTrails, AdjacentBombExplosion;
-    
- 
+
+    [Header("Variable thaht allow to construct tiles")]
+    public bool GenBlankSpaces = true;
+    public bool GenBreakableTiles = false;
+    public bool GenChocolateTiles = false;
+    public bool GenConcreteTiles = false;
+    public bool GenLockTiles = false;
+
+
 
 
     [Header("Layout")]
@@ -116,7 +124,7 @@ public class Board : MonoBehaviour
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         SetUp(); // Генерация таблицы
-       
+        offset = 10;
 
     }
 
@@ -133,13 +141,17 @@ public class Board : MonoBehaviour
     //Генерация пустых  пространств
     public void GeneratingBlankSpaces()
     {
-        for (int i = 0; i < boardLayout.Length; i++)
+        if (GenBlankSpaces) 
         {
-            if (boardLayout[i].tileKind == TileKind.Blank)
+            for (int i = 0; i < boardLayout.Length; i++)
             {
-                blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
+                if (boardLayout[i].tileKind == TileKind.Blank)
+                {
+                    blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
+                }
             }
         }
+        
     }
 
     /*public bool VerifyTypeTile(TileKind TileType)
@@ -165,16 +177,19 @@ public class Board : MonoBehaviour
     // генерация ломаемых плиток(желе из candy crush)
     public void GenerateBreakableTiles() 
     {
-        //Перебрать все плитки на экране
-        for (int i = 0; i < boardLayout.Length; i++) 
+        if (GenBreakableTiles)
         {
-            //если плитка является "ломаемой" плиткой
-            if (boardLayout[i].tileKind == TileKind.Breakable) 
+            //Перебрать все плитки на экране
+            for (int i = 0; i < boardLayout.Length; i++)
             {
-                // Создать ломаемую плитку в данной позиции
-                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
-                GameObject tile = Instantiate(breakableTilePrefab, tempPosition, Quaternion.identity);
-                breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                //если плитка является "ломаемой" плиткой
+                if (boardLayout[i].tileKind == TileKind.Breakable)
+                {
+                    // Создать ломаемую плитку в данной позиции
+                    Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                    GameObject tile = Instantiate(breakableTilePrefab, tempPosition, Quaternion.identity);
+                    breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                }
             }
         }
     }
@@ -183,15 +198,18 @@ public class Board : MonoBehaviour
     // генерация залоченых плиток
     private void GeneratLockTiles() 
     {
-        for (int i = 0; i < boardLayout.Length; i++)
+        if (GenLockTiles)
         {
-            //если плитка является "залоченой" плиткой
-            if (boardLayout[i].tileKind == TileKind.Lock)
+            for (int i = 0; i < boardLayout.Length; i++)
             {
-                // Создать залоченую плитку в данной позиции
-                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
-                GameObject tile = Instantiate(lockTilePrefab, tempPosition, Quaternion.identity);
-                lockTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                //если плитка является "залоченой" плиткой
+                if (boardLayout[i].tileKind == TileKind.Lock)
+                {
+                    // Создать залоченую плитку в данной позиции
+                    Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                    GameObject tile = Instantiate(lockTilePrefab, tempPosition, Quaternion.identity);
+                    lockTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                }
             }
         }
     }
@@ -199,15 +217,18 @@ public class Board : MonoBehaviour
     // генерация зефирок
     private void GeneratConcreteTiles()
     {
-        for (int i = 0; i < boardLayout.Length; i++)
+        if (GenConcreteTiles)
         {
-            //если плитка является зефиркой
-            if (boardLayout[i].tileKind == TileKind.Concrete)
+            for (int i = 0; i < boardLayout.Length; i++)
             {
-                // Создать зефирку в данной позиции
-                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
-                GameObject tile = Instantiate(concreteTilePrefab, tempPosition, Quaternion.identity);
-                concreteTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                //если плитка является зефиркой
+                if (boardLayout[i].tileKind == TileKind.Concrete)
+                {
+                    // Создать зефирку в данной позиции
+                    Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                    GameObject tile = Instantiate(concreteTilePrefab, tempPosition, Quaternion.identity);
+                    concreteTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                }
             }
         }
     }
@@ -215,15 +236,18 @@ public class Board : MonoBehaviour
     //генерация плиток шоколада
     private void GeneratChocolateTiles()
     {
-        for (int i = 0; i < boardLayout.Length; i++)
+        if (GenChocolateTiles)
         {
-            //если плитка является шоколадной плиткой
-            if (boardLayout[i].tileKind == TileKind.Chocolate)
+            for (int i = 0; i < boardLayout.Length; i++)
             {
-                // Создать шоколадную плитку в данной позиции
-                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
-                GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity);
-                chocolateTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                //если плитка является шоколадной плиткой
+                if (boardLayout[i].tileKind == TileKind.Chocolate)
+                {
+                    // Создать шоколадную плитку в данной позиции
+                    Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                    GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity);
+                    chocolateTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                }
             }
         }
     }
@@ -249,8 +273,6 @@ public class Board : MonoBehaviour
         GeneratLockTiles();
         GeneratConcreteTiles();
         GeneratChocolateTiles();
-
-
         for (int i = 0; i < width; i++) 
         {
             // на каждую плитку по x мы генерируем все плитки по y
@@ -299,18 +321,15 @@ public class Board : MonoBehaviour
         {
             if (allDots[column - 1, row] != null && allDots[column - 2, row] != null)
             {
-                debugLog("проверка будет ли матч с краю", "");
-                if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row])// если элемент справа и второй элемент справа равны основному обьекту то выйгрыш
+                if (allDots[column - 1, row].CompareTag(piece.tag) && allDots[column - 2, row])// если элемент справа и второй элемент справа равны основному обьекту то выйгрыш
                 {
-                    debugLog("Есть Матч с краю :", piece.tag);
                     return true;
                 }
             }
             if (allDots[column, row - 1] != null && allDots[column, row - 2] != null) 
             {
-                if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2])// если элемент снизу и второй элемент снизу равны основному обьекту то выйгрыш
+                if (allDots[column, row - 1].CompareTag(piece.tag) && allDots[column, row - 2])// если элемент снизу и второй элемент снизу равны основному обьекту то выйгрыш
                 {
-                    debugLog("Есть Матч с краю :", piece.tag);
                     return true;
                 }
             }
@@ -321,10 +340,8 @@ public class Board : MonoBehaviour
                 {
                     if (allDots[column, row - 1] != null && allDots[column, row - 2] != null) 
                     {
-                        debugLog("проверка будет ли матч с краю", "");
-                        if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) // если элемент снизу и второй элемент снизу равны основному обьекту то выйгрыш
+                        if (allDots[column, row - 1].CompareTag(piece.tag) && allDots[column, row - 2].CompareTag(piece.tag)) // если элемент снизу и второй элемент снизу равны основному обьекту то выйгрыш
                         {
-                            debugLog("Есть Матч с краю :", piece.tag);
                             return true;
                         }
                     }
@@ -334,10 +351,8 @@ public class Board : MonoBehaviour
                 {
                     if (allDots[column-1, row] != null && allDots[column-2, row] != null) 
                     {
-                        debugLog("проверка будет ли матч с краю", "");
-                        if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) //если элемент справа и второй элемент справа равны основному обьекту то выйгрыш
+                        if (allDots[column - 1, row].CompareTag(piece.tag) && allDots[column - 2, row].CompareTag(piece.tag)) //если элемент справа и второй элемент справа равны основному обьекту то выйгрыш
                         {
-                            debugLog("Есть Матч с краю :", piece.tag);
                             return true;
                         }
                     }
@@ -353,7 +368,6 @@ public class Board : MonoBehaviour
     {
         //Делаем коипю нынешних матчей
         List<GameObject> matchCopy = findMatches.currentMatches as List<GameObject>;
-        debugLog("Сделали матч копию, начало ColumnOrRow", "");
         // Cycle through all of match copy and decide if a bomb needs to be made
         // Проверяем все матчи и смотрим должен ли сгенерироватсья бустер
         for (int i = 0; i < matchCopy.Count; i++) 
@@ -367,7 +381,6 @@ public class Board : MonoBehaviour
             // Cycle throgh the rest of the pieces and compare
             for (int j = 0; j < matchCopy.Count; j++) 
             {
-                debugLog("Начало перебора всех матчей для опрделение сколько в колонке или ряде матчей", "");
                 Dot nextDot = matchCopy[j].GetComponent<Dot>();
                 if (nextDot == thisDot)
                 {
@@ -376,12 +389,10 @@ public class Board : MonoBehaviour
                 if (nextDot.column == column && nextDot.CompareTag(thisDot.tag)) 
                 {
                     columnMatch++;
-                    debugLog("матчей в колнке стало + 1", columnMatch.ToString());
                 }
                 if (nextDot.row == row && nextDot.CompareTag(thisDot.tag)) 
                 {
                     rowMatch++;
-                    debugLog("матчей в ряде стало + 1", rowMatch.ToString());
                 }
             }
             //return 3 of column or row match
@@ -389,35 +400,26 @@ public class Board : MonoBehaviour
             //return 1 if color bomb
             if (columnMatch == 4 || rowMatch == 4) 
             {
-                debugLog("В колонке или ряде при матче 5 элемента", columnMatch.ToString());
-                debugLog("", rowMatch.ToString());
                 thisDot.MakeColorBomb(thisDot);
                 return 1;
             }
             if (columnMatch == 2 && rowMatch == 2)
             {
-                debugLog("В колонке или ряде при матче 3 элемента", columnMatch.ToString());
-                debugLog("", rowMatch.ToString());
                 thisDot.AdjacentBomb(thisDot);
                 return 2;
             }else if (columnMatch == 5 || rowMatch == 5)
             {
-                debugLog("В колонке или ряде при матче 6 элемента", columnMatch.ToString());
-                debugLog("", rowMatch.ToString());
                 thisDot.AdjacentBomb(thisDot);
                 return 2;
             }
             if (columnMatch == 3 || rowMatch == 3) 
             {
-                debugLog("В колонке или ряде при матче 4 элемента", columnMatch.ToString());
-                debugLog("", rowMatch.ToString());
                 //Debug.Log("currentDot == null");
                 thisDot.MakeRowBomb(thisDot);
                 return 3;
             }
         }
 
-        debugLog("Матча нет", "");
         return 0;
         /*int numberHorizontal = 0;
         int numberVertical = 0;
@@ -444,7 +446,6 @@ public class Board : MonoBehaviour
 
     private void CheckToMakeBombs()
     {
-        debugLog("Запуск функции CheckToMakeBombs", "------------");
         //How many objects are in findMatches currentMatches?
         //проверка на количество обьектов в массиве currentMatches который показывает нам сколько всего заматченных элементов
         if (findMatches.currentMatches.Count > 3)
@@ -452,40 +453,29 @@ public class Board : MonoBehaviour
             //What type of match
             //какой тип матча
             int typeOfMatch = ColumnOrRow();
-            debugLog("Получение typeOfMatch: ", typeOfMatch.ToString());
             if (typeOfMatch == 1) // если тип матча равен 1 то сделать цветную бомбу
             {
-                debugLog("Запуск проверки на цветную бомбу:", "");
                 if (currentDot != null)
                 {
                     if (currentDot.isMatched)
                     {
-                        debugLog("CurrentDot.isMatched = true", "");
                         if (!currentDot.isColorBomb)
                         {
-                            debugLog("Элемент сдвига не является colorBomb", "");
                             currentDot.isMatched = false;
-                            debugLog("currentDot.Ismatched теперь равен false", "");
                             currentDot.MakeColorBomb(currentDot);
-                            debugLog("Запуск функции создания цветной бомбы", "---------------");
                         }
                     }
                     else
                     {
-                        debugLog("CurrentDot.isMatched = false", "");
                         if (currentDot.otherDot != null) // other dot это фрукт который находится рядом с нашим фруктом который мы хотим передвинуть (подробности в скрипте Dot.cs)
                         {
                             Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
                             if (otherDot.isMatched)
                             {
-                                debugLog("otherDot.isMatched = true", "");
                                 if (!otherDot.isColorBomb)
                                 {
-                                    debugLog("otherDot  не является colorBomb", "");
                                     otherDot.isMatched = false;
-                                    debugLog("otherDot.isMatched = false", "");
                                     otherDot.MakeColorBomb(currentDot);
-                                    debugLog("Запуск функции создания цветной бомбы", "---------------");
                                 }
                             }
                         }
@@ -494,19 +484,14 @@ public class Board : MonoBehaviour
             }
             else if (typeOfMatch == 2)
             {
-                debugLog("Запуск проверки на splashBomb:", "");
                 if (currentDot != null)
                 {
                     if (currentDot.isMatched)
                     {
-                        debugLog("CurrentDot.isMatched = true", "");
                         if (!currentDot.isColorBomb)
                         {
-                            debugLog("Элемент сдвига не является colorBomb", "");
                             currentDot.isMatched = false;
-                            debugLog("currentDot.isMatched = false", "");
                             currentDot.AdjacentBomb(currentDot);
-                            debugLog("Запуск функции создания splash Bomb", "---------------");
                         }
                     }
                     else
@@ -516,14 +501,10 @@ public class Board : MonoBehaviour
                             Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
                             if (otherDot.isMatched)
                             {
-                                debugLog("otherDot.isMatched = true", "");
                                 if (!otherDot.isColorBomb)
                                 {
-                                    debugLog("otherDot не является splashBomb", "");
                                     otherDot.isMatched = false;
-                                    debugLog("otherDot.isMatched = false", "");
                                     otherDot.AdjacentBomb(otherDot);
-                                    debugLog("Запуск функции создания splash bomb", "---------------");
                                 }
                             }
                         }
@@ -533,7 +514,6 @@ public class Board : MonoBehaviour
             else if (typeOfMatch == 3) 
             {
                 findMatches.ChekcBombs();
-                debugLog("Запуск CheckBombs", "---------------");
             }
         }
 
@@ -615,7 +595,6 @@ public class Board : MonoBehaviour
             if (concreteTiles[i, row]) 
             {
                 concreteTiles[i, row].TakeDamage(1);
-                debugLog("Damaged concreTiles by BombRow", "");
                 if (concreteTiles[i, row].hitPoints <= 0)
                 {
                     concreteTiles[i, row] = null;
@@ -631,7 +610,6 @@ public class Board : MonoBehaviour
             if (concreteTiles[column, i])
             {
                 concreteTiles[column, i].TakeDamage(1);
-                debugLog("Damaged concreTiles by BombColumn", "");
                 if (concreteTiles[column, i].hitPoints <= 0)
                 {
                     concreteTiles[column, i] = null;
@@ -642,15 +620,11 @@ public class Board : MonoBehaviour
     // уничтожение заматченых элементов
     private void DestroyMatchesAt(int column, int row, Dot thisDot) 
     {
-        //Debug.Log("Start DestroyMatchesAt(), GameState = " + currentState);
-        debugLog("Запуск функции уничтожение матчей", "--->");
         if (allDots[column, row].GetComponent<Dot>().isMatched) 
         {
             //узнать сколько заматченых элементов
             if (findMatches.currentMatches.Count >= 4)
             {
-                //Debug.Log("Заматченных элементов >= 4, currentMatches = " + findMatches.currentMatches.Count);
-                debugLog("Заматченых элементов больше чем 3: ", findMatches.currentMatches.Count.ToString());
                 CheckToMakeBombs();
             }
             else 
@@ -663,7 +637,6 @@ public class Board : MonoBehaviour
             if(breakableTiles[column, row] != null)
             {
                 breakableTiles[column, row].TakeDamage(1);
-                debugLog("Урон breakableTiles", "");
                 if (breakableTiles[column, row].hitPoints <= 0)
                 {
                     breakableTiles[column, row] = null;
@@ -674,7 +647,6 @@ public class Board : MonoBehaviour
             if (lockTiles[column, row] != null)
             {
                 lockTiles[column, row].TakeDamage(1);
-                debugLog("Урон lockTiles", "");
                 if (lockTiles[column, row].hitPoints <= 0)
                 {
                     lockTiles[column, row] = null;
@@ -695,7 +667,6 @@ public class Board : MonoBehaviour
             /*GameObject particle = Instantiate(explosionEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.2f);*/
             checkForColor(allDots[column, row], column, row); // создаем эффект в зависимости от цвета
-            //Debug.Log("thisDot in DestroyMatches = " + thisDot);
             Destroy(allDots[column, row]);
             scoreManager.InreaseScore(basePieceScoreValue);
             allDots[column, row] = null;
@@ -703,39 +674,38 @@ public class Board : MonoBehaviour
             
             
             
-            //Debug.Log("End DestroyMatchesAt(), GameState = " + currentState);
         }
     }
 
     //метод который проверяет какого цвета должен быть эффект взрыва
     public void checkForColor(GameObject dot, int column, int row)
     {
-        if (dot.tag == "Donut")
+        if (dot.CompareTag("Donut"))
         {
             GameObject particle = Instantiate(DonutExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
         }
-        else if (dot.tag == "Heart")
+        else if (dot.CompareTag("Heart"))
         {
             GameObject particle = Instantiate(HeartExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
         }
-        else if (dot.tag == "GreenBlop")
+        else if (dot.CompareTag("GreenBlop"))
         {
             GameObject particle = Instantiate(GreenBlopExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
         }
-        else if (dot.tag == "RedSweet")
+        else if (dot.CompareTag("RedSweet"))
         {
             GameObject particle = Instantiate(RedSweetExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
         }
-        else if (dot.tag == "StartElement")
+        else if (dot.CompareTag("StartElement"))
         {
             GameObject particle = Instantiate(StarExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
         }
-        else if (dot.tag == "VioletSweet")
+        else if (dot.CompareTag("VioletSweet"))
         {
             GameObject particle = Instantiate(VioletExplosion, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.3f);
@@ -747,7 +717,6 @@ public class Board : MonoBehaviour
     public void DestroyMatches()
     {
         currentState = GameState.wait;
-        debugLog("Запуск функции перебора для уничтожения", "-------------");
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++) 
@@ -761,13 +730,11 @@ public class Board : MonoBehaviour
         //Debug.Log("End DestroyMatches, GameState = " + currentState);
         findMatches.soundStripe = false;
         findMatches.currentMatches.Clear();
-        debugLog("Очистить массив currentMatches", "");
         StartCoroutine(DecreaseRowCo2());
     }
     // сдвиг элементов при уничтожение матча
     private void DamageConcrete(int column, int row) 
     {
-        debugLog("Запуск уничтожение зефирок", "--->");
         if (column > 0) 
         {
             if (concreteTiles[column - 1, row]) 
@@ -815,7 +782,6 @@ public class Board : MonoBehaviour
     }
     private void DamageChocolate(int column, int row)
     {
-        debugLog("Запуск уничтожение шоколада", "--->");
         if (column > 0)
         {
             if (chocolateTiles[column - 1, row])
@@ -928,7 +894,6 @@ public class Board : MonoBehaviour
     //Заполнение таблицы
     private void RefilBoard() 
     {
-        debugLog("Запуск функии RefilBoard", "--------");
         for (int i = 0; i < width; i++) 
         {
             for (int j = 0; j < height; j++) 
@@ -957,7 +922,6 @@ public class Board : MonoBehaviour
     // нахождение новыых матчей
     private bool MatchesOnBoard() 
     {
-        debugLog("Запуск функции MatchesOnBoard", "-----------");
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -966,13 +930,11 @@ public class Board : MonoBehaviour
                 {
                     if (allDots[i, j].GetComponent<Dot>().isMatched) 
                     {
-                        debugLog("Был найден новый матч", "");
                         return true;
                     }
                 }
             }
         }
-        debugLog("Новых матчей не обнаружено", "-----------");
         return false;
     }
 
@@ -1076,25 +1038,21 @@ public class Board : MonoBehaviour
 
     private void MakeNewSlime() 
     {
-        debugLog("Запуск функции создания шоколадки MakeNewSlime()", "---------------");
         bool slime = false;
         int maxIterations = 0;
         while (!slime && maxIterations < 10000)
         {
             int newX = Random.Range(0, width); // choose a random spot to spawn a slime coordinate x
             int newY = Random.Range(0, height); // choose a random spot to spawn a slime coordinate y 
-            debugLog("Опроделение координат для спавна:", "x = " + newX.ToString() + " y = " + newY.ToString());
             if (chocolateTiles[newX, newY]) // check if the random spot it the slime on the board 
             {
                 Vector2 adjacent = CheckForAdjacent(newX, newY); // check if new position where we need to spawn it's not a slime tile or another type of tile
-                debugLog("получаем vector направления от slime:", "--> "+ adjacent.ToString());
                 if (adjacent != Vector2.zero) 
                 {
                     Destroy(allDots[newX + (int)adjacent.x, newY + (int)adjacent.y]); // destroy the fruit where we need to spawn a slime tile
                     Vector2 tempPosition = new Vector2(newX + (int)adjacent.x, newY + (int)adjacent.y); // new postion of the spawn of slime tile
                     GameObject tile = Instantiate(chocolateTilePrefab, tempPosition, Quaternion.identity); // creatuing a new gameobject slime tile on the scene
                     chocolateTiles[newX + (int)adjacent.x, newY + (int)adjacent.y] = tile.GetComponent<BackgroundTile>(); // adding new slime tile to the array of slime tiles
-                    debugLog("Генерируем новую шоколадку по координата:", tempPosition.ToString());
                     slime = true;
                     
                 }
@@ -1121,7 +1079,6 @@ public class Board : MonoBehaviour
     private bool CheckForMatches() // проверка на матч
     {
         MatchList = new List<GameObject>();
-        debugLog("CheckForMatches", "----------");
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -1132,7 +1089,7 @@ public class Board : MonoBehaviour
                     {
                         if (allDots[i + 1, j] != null && allDots[i + 2, j] != null)
                         {
-                            if (allDots[i + 1, j].tag == allDots[i, j].tag && allDots[i + 2, j].tag == allDots[i, j].tag)
+                            if (allDots[i + 1, j].CompareTag(allDots[i, j].tag) && allDots[i + 2, j].CompareTag(allDots[i, j].tag))
                             {
                                 debugLog("Match true", "");
                                 MatchList.Add(allDots[i, j]);
@@ -1153,9 +1110,8 @@ public class Board : MonoBehaviour
                     {
                         if (allDots[i, j + 1] != null && allDots[i, j + 2] != null)
                         {
-                            if (allDots[i, j + 1].tag == allDots[i, j].tag && allDots[i, j + 2].tag == allDots[i, j].tag)
+                            if (allDots[i, j + 1].CompareTag(allDots[i, j].tag) && allDots[i, j + 2].CompareTag(allDots[i, j].tag))
                             {
-                                debugLog("Match true", "");
                                 //Debug.Log("CheckForMatches(), GameState = " + currentState);
                                 MatchList.Add(allDots[i, j]);
                                 MatchList.Add(allDots[i, j+1]);
@@ -1176,7 +1132,6 @@ public class Board : MonoBehaviour
             }
         }
         //Debug.Log("CheckForMacthes(), GameState = " + currentState);
-        debugLog("Match false", "");
         MatchList.Clear();
         return false;
     }

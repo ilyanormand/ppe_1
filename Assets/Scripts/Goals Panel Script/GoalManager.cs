@@ -92,10 +92,10 @@ public class GoalManager : MonoBehaviour
                 Debug.Log("board.current state in UpdateGoals() = " + board.currentState);*/
                 if (endGame != null) 
                 {
-                    Debug.Log("endGame.WinGame()");
+                    //Debug.Log("endGame.WinGame()");
                     WinState = true;
                     //endGame.WinGame();
-                    Debug.Log("You win");                   
+                    //Debug.Log("You win");                   
                 }
                 
             }
