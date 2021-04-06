@@ -16,18 +16,18 @@ public class BackgroundTile : MonoBehaviour
 
     private void Update()
     {
-        if (hitPoints <= 0) // если здоровье ниже нуля
+        if (hitPoints <= 0)
         {
             if (goalManager != null) 
             {
                 goalManager.ComparedGoal(this.gameObject.tag);
                 goalManager.UpdateGoals();
             }
-            Destroy(this.gameObject); //уничтожить плитку
+            Destroy(this.gameObject); //destroy tile
         }
     }
 
-    public void TakeDamage(int damage) // нанесение урона плитки
+    public void TakeDamage(int damage) // damage for tile
     {
         hitPoints -= damage;
         makeLighter();

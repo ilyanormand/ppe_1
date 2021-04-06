@@ -5,18 +5,18 @@ using UnityEngine.UI;
 public class WinPanel : MonoBehaviour
 {
     [Header("Level Information")]
-    public int level; // здесь хранится наш уровень
-    private GameData gameData; // обьект GameData в которм хранится вся информация об уровне
-    private int starsActive; // здесь будут хранится все звезды которые нужно активровать
-    private int highScore; // здесь будет хранится самый высокий счет
-    public GameObject fadePanel; // обьект fadePanel который будет затемнятся при активации winPanel
-    public GameObject backgroundWinPanel; // обькет который будет затеменять экран при активации win panel\
-    public ScoreManager scoreManager; // создаем обьект с классом ScoreManager
+    public int level; 
+    private GameData gameData; 
+    private int starsActive; 
+    private int highScore; 
+    public GameObject fadePanel; 
+    public GameObject backgroundWinPanel;
+    public ScoreManager scoreManager;
     private SoundManager soundManager;
     private Board board;
 
     [Header("UI stuff")]
-    public GameObject[] stars; // здесь хранится все картинки звезд
+    public GameObject[] stars;
     public Text highScoreText;
     void OnEnable()
     {
@@ -26,10 +26,10 @@ public class WinPanel : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         board = FindObjectOfType<Board>();
         //Debug.Log("board = " + board);
-        if (backgroundWinPanel != null) // проверка backgroundWinPanel на существование
+        if (backgroundWinPanel != null) 
         {
             //Debug.Log("backgroundWinPanel != null");
-            backgroundWinPanel.SetActive(true); // активируем затемнение экрана
+            backgroundWinPanel.SetActive(true); 
         }
         else
         {
@@ -37,7 +37,7 @@ public class WinPanel : MonoBehaviour
         }
         
 
-        // нахождение нужных элементов в массиве в ScoreGoals
+  
 
         /*Debug.Log("board.ScoreGoals = " + board.ScoreGoals);
         foreach (int i in board.ScoreGoals) 

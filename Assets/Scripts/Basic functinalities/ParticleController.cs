@@ -25,7 +25,7 @@ public class ParticleController : MonoBehaviour
     {
         if (attached != null) 
         {
-            transform.position = attached.transform.position; // задаем эффекту таку же позицию как и gameobject
+            transform.position = attached.transform.position; // set the effect in the same position as the gameobject
         } 
     }
 }

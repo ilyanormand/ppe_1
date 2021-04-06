@@ -32,11 +32,11 @@ public class ScoreManager : MonoBehaviour
         //звезды
         for (int i = 0; i < board.ScoreGoals.Length; i++) 
         {
-            if (score > board.ScoreGoals[i] && numberStars < i + 1) // если количество очков больше чем цель очков и при этом количество звезд не превышает макс число звезд то
+            if (score > board.ScoreGoals[i] && numberStars < i + 1) // if the number of points is more than the goal of the points and the number of stars does not exceed the maximum number of stars then
             {
                 if (goalManager.WinState == true) 
                 {
-                    numberStars++; // добавляем звезду
+                    numberStars++; // adding star
                 }
             }
         }

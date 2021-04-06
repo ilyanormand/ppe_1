@@ -101,7 +101,7 @@ public class FindMatches : MonoBehaviour
 
     private void AddToListAndMatch(GameObject dot) 
     {
-        if (!currentMatches.Contains(dot)) // если нынешний матч не имеет элемент то добавить этот элемент
+        if (!currentMatches.Contains(dot)) 
         {
             currentMatches.Add(dot);
         }
@@ -116,7 +116,7 @@ public class FindMatches : MonoBehaviour
     }
     private IEnumerator FindAllmatchesCo()
     {
-        yield return new WaitForSeconds(.1f); // пауза 0,2 секунды
+        yield return new WaitForSeconds(.1f);
         for (int i = 0; i < board.width; i++) 
         {
             for (int j = 0; j < board.height; j++) 
@@ -134,9 +134,8 @@ public class FindMatches : MonoBehaviour
                         {
                             Dot leftDotComponent = leftDot.GetComponent<Dot>();
                             Dot rightDotComponent = rightDot.GetComponent<Dot>();
-                            if (leftDot.CompareTag(currenDot.tag) && rightDot.CompareTag(currenDot.tag)) // проверка на матч
+                            if (leftDot.CompareTag(currenDot.tag) && rightDot.CompareTag(currenDot.tag)) // match verification
                             {
-                                //проверка на бомбу
                                 currentMatches.Union(IsRowBomb(leftDotComponent, currentDotComponent, rightDotComponent));
 
                                 currentMatches.Union(IsColumnBomb(leftDotComponent, currentDotComponent, rightDotComponent));
@@ -182,13 +181,11 @@ public class FindMatches : MonoBehaviour
         {
             for (int j = 0; j < board.height; j++) 
             {
-                //проверяем существует ли элемент
                 if (board.allDots[i, j] != null) 
                 {
-                    //проверить тег на элементе
                     if (board.allDots[i, j].tag == color) 
                     {
-                        //Заматчить эти элементы
+
                         board.allDots[i, j].GetComponent<Dot>().isMatched = true;
                         listOfColorMatches.Add(board.allDots[i, j]);
                     }
@@ -198,22 +195,22 @@ public class FindMatches : MonoBehaviour
     }
 
 
-    List<GameObject> GetAdjacentPieces(int column, int row)  // где column, row это позиция нашей бомбочки
+    List<GameObject> GetAdjacentPieces(int column, int row)  
     {
-        List<GameObject> dots = new List<GameObject>(); //  создаем массив для хранение нужных нам жлементов для уничтожение
-        // перебор массива сразу от позиции бомбочик вокруг нее
+        List<GameObject> dots = new List<GameObject>();   
+
         int sizeOfExplosion = 1;
         for (int i = column - sizeOfExplosion; i <= column + sizeOfExplosion; i++)  
         {
             for (int j = row - sizeOfExplosion; j <= row + sizeOfExplosion; j++)
             {
-                // Проверка есть ли элемент в таблицы
+
                 if (i >= 0 && i < board.width && j >= 0 && j < board.height) 
                 {
                     if (board.allDots[i, j] != null) 
                     {
-                        dots.Add(board.allDots[i, j]); // добавляем элемент в массив
-                        board.allDots[i, j].GetComponent<Dot>().isMatched = true; // делаем данный элемент заматченнным 
+                        dots.Add(board.allDots[i, j]); 
+                        board.allDots[i, j].GetComponent<Dot>().isMatched = true;
                     }
                     
                 }
@@ -340,26 +337,21 @@ public class FindMatches : MonoBehaviour
     public void ChekcBombs() 
     {
         //Debug.Log("CheckBombs()");
-        // проверка на то что двигал ли что то игрок
         if (board.currentDot != null) 
         {
-            // проверка на то что двигаемый элемент заматченый
             board.currentDot.isMatched = false;
-            //выбрать какую бомбу сделать
             int typeOfBomb = Random.Range(0, 100);
             if (typeOfBomb < 50)
             {
-                // сделать бомбу которая взрывает горизонтальный ряд
                 //Debug.Log("We will create a row bomb");
                 board.currentDot.MakeRowBomb(board.currentDot);
             }
             else if (typeOfBomb >= 50)
             {
                 //Debug.Log("We will create a column bomb");
-                // сделать бомбу которая взрывает вертикальный ряд
                 board.currentDot.MakeColumnBomb();
             }
-            // проверка на то что другой элемент заматчен
+
             /*else if (board.currentDot.otherDot != null) 
             {
                 Dot otherDot = board.currentDot.otherDot.GetComponent<Dot>();

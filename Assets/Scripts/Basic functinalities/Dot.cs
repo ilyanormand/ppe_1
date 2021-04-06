@@ -10,9 +10,9 @@ public class Dot : MonoBehaviour
     public int row;
     public int previousColumn;
     public int previousRow;
-    public int targetX; // цель свайпа по X
-    public int targetY; // цель свайпа по Y
-    public float swipeAngle = 0; // переменная для хранения угла
+    public int targetX; 
+    public int targetY; 
+    public float swipeAngle = 0; 
 
     [Header("Базовая логика Матч 3")]
     private EndGameManager endGameManager;
@@ -48,18 +48,9 @@ public class Dot : MonoBehaviour
         hintManager = FindObjectOfType<HintManager>();
         board = GameObject.FindWithTag("Board").GetComponent<Board>();
 
-        //board = FindObjectOfType<Board>();// Находим таблицу на нашей сцене
         findMatches = FindObjectOfType<FindMatches>();
- 
-        //targetX = (int)transform.position.x; // координаты элемента таблицы по x преобразованные со float в integer
-        //targetY = (int)transform.position.y; // координаты элемента таблицы по y преобразованные со float в integer
-        //row = targetY;
-        //column = targetX;
-        //previousColumn = column;
-        //previousRow = row;
     }
 
-    //Это для тестов и дебаггов
 
     private void OnMouseOver()
     {
@@ -105,10 +96,10 @@ public class Dot : MonoBehaviour
         }
         targetX = column;
         targetY = row;
-        if (Mathf.Abs(targetX - transform.position.x) > .1) // если позиция по X больше чем 0.1  то значет что свайп идет вправо или влево
+        if (Mathf.Abs(targetX - transform.position.x) > .1) // si la position X > 0.1 alors le swipe est vers la droite ou gauche
         {
-            tempPosition = new Vector2(targetX, transform.position.y); // создаем новый вектор куда будет направлено движение
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 10f * Time.deltaTime); // Lerp создает плавное скольжение где .1f время скольжение 
+            tempPosition = new Vector2(targetX, transform.position.y); // creation d'un nouveau vector
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 10f * Time.deltaTime); 
             if (board.allDots[column, row] != this.gameObject)
             {
                 board.allDots[column, row] = this.gameObject;
@@ -117,11 +108,11 @@ public class Dot : MonoBehaviour
         }
         else
         {
-            tempPosition = new Vector2(targetX, transform.position.y); // создаем новый вектор куда будет направлено движение
-            transform.position = tempPosition; // задаем элементую нужную позицию
-            board.allDots[column, row] = this.gameObject; // обращаемся к переменной allDots в классе Board и присваиваем ее значение нашему обьекту то есть позицию точки по x и y
+            tempPosition = new Vector2(targetX, transform.position.y); // сcreation d'un nouveau vector
+            transform.position = tempPosition; 
+            board.allDots[column, row] = this.gameObject; 
         }
-        if (Mathf.Abs(targetY - transform.position.y) > .1) // если позиция по y больше чем 0.1  то значет что свайп идет вверх или вних
+        if (Mathf.Abs(targetY - transform.position.y) > .1) //  si la position Y > 0.1 alors le swipe est vers le haut ou bas
         {
             tempPosition = new Vector2(transform.position.x, targetY); 
             transform.position = Vector2.Lerp(transform.position, tempPosition, 10f * Time.deltaTime);
@@ -141,7 +132,7 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Уничтожить подсказку
+        // Hint Destroy
         if (hintManager != null) 
         {
             //Debug.Log(hintManager.hint);
@@ -153,7 +144,6 @@ public class Dot : MonoBehaviour
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
         
-        // фиксируем позицию клика при помощи Input.mousePosition
 
         //Debug.Log(firstTouchPosition);
     }
@@ -162,7 +152,7 @@ public class Dot : MonoBehaviour
     {
         if (board.currentState == GameState.move) 
         {
-            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Переводим значение позиции клика из пикселей в глобальные координаты
+            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
             CalculateAngle();
         }
         
@@ -182,10 +172,10 @@ public class Dot : MonoBehaviour
 
     void movePiecesActual(Vector2 direction) 
     {
-        otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];//передвигает выбраный элемент
+        otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];// moving selected items
         previousColumn = column;
         previousRow = row;
-        if (board.lockTiles[column, row] == null && board.lockTiles[column + (int)direction.x, row + (int)direction.y] == null) // запрет на движение заблокировных элемнентов
+        if (board.lockTiles[column, row] == null && board.lockTiles[column + (int)direction.x, row + (int)direction.y] == null) 
         {
             if (otherDot != null)
             {
@@ -194,7 +184,7 @@ public class Dot : MonoBehaviour
                 column += (int)direction.x;
                 row += (int)direction.y;
                 tutorial.tutorialShow = false;
-                StartCoroutine(CheckMoveCo());// проверка на возврат элемента в исходную позицию
+                StartCoroutine(CheckMoveCo());// checking to return the item to his original position 
             }
             else
             {
@@ -208,27 +198,27 @@ public class Dot : MonoBehaviour
 
     }
 
-    // Передвижение элементов
+    // Items moving
     void movePieces()
     {
         if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1 && swipeAngle != 0)
         {
-            //Правый свайп
-            movePiecesActual(Vector2.right); // Vector2(1, 0) передвижение элемента вправо на 1 единицу по оси x
+            //Right swipe
+            movePiecesActual(Vector2.right); 
         }
         else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1 && swipeAngle != 0)
         {
-            //Вверхний свайп
+            //Top swipe 
             movePiecesActual(Vector2.up);
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0 && swipeAngle != 0)
         {
-            //Левый свайп
+            //Left swipe
             movePiecesActual(Vector2.left);
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0 && swipeAngle != 0)
         {
-            //Свайп вниз
+            //Bottom swipe
             movePiecesActual(Vector2.down);
         }
         
@@ -239,7 +229,6 @@ public class Dot : MonoBehaviour
     {
         if (isColorBomb)
         {
-            //этот элемент это молния, а другой элемент это элемент который нужно уничтожить
             findMatches.MatchPiecesOfColors(otherDot.tag);
             //Debug.Log("ColorBombEffect = " + colorBombEffect);
             isMatched = true;
@@ -247,7 +236,6 @@ public class Dot : MonoBehaviour
             yield return new WaitForSeconds(1f);
         } else if (otherDot.GetComponent<Dot>().isColorBomb) 
         {
-            //этот элемент это элемент который нужно уничтожить, а другой элемент это молния
             findMatches.MatchPiecesOfColors(this.gameObject.tag);
             //Debug.Log("ColorBombEffect = " + colorBombEffect);
             otherDot.GetComponent<Dot>().isMatched = true;
@@ -255,10 +243,10 @@ public class Dot : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
         }
-        yield return new WaitForSeconds(.5f); // пауза 
+        yield return new WaitForSeconds(.5f); // pause 
         if (otherDot != null)
         {
-            if (!isMatched && !otherDot.GetComponent<Dot>().isMatched) // если нету матчей то элементы в исходыне позиции
+            if (!isMatched && !otherDot.GetComponent<Dot>().isMatched) // if ther is no match
             {
                 otherDot.GetComponent<Dot>().row = row;
                 otherDot.GetComponent<Dot>().column = column;
@@ -279,7 +267,7 @@ public class Dot : MonoBehaviour
                 }
                 if (board.currentState != GameState.win) 
                 {
-                    board.DestroyMatches(); // уничтожить заматченые элементы
+                    board.DestroyMatches(); // Destroy match
                 }
                 
             }
@@ -289,17 +277,17 @@ public class Dot : MonoBehaviour
     }
 
 
-    // Нахождение матчей
+    // FindingMatch
     void FindMatches() 
     {
-        if (column > 0 && column < board.width - 1) // если 
+        if (column > 0 && column < board.width - 1) 
         {
-            GameObject leftDot1 = board.allDots[column - 1, row]; // находим элемент слева 
-            GameObject rightDot1 = board.allDots[column + 1, row]; // находим элемент справа
+            GameObject leftDot1 = board.allDots[column - 1, row]; // left item
+            GameObject rightDot1 = board.allDots[column + 1, row]; // right item
             if (leftDot1 != null && rightDot1 !=null) 
             {
                 if (leftDot1.CompareTag(this.gameObject.tag) && rightDot1.CompareTag(this.gameObject.tag))
-                // если элемент справа и элемент слева равны основному обьекту то выйгрыш
+                // if item right and item left is equal
                 {
                     leftDot1.GetComponent<Dot>().isMatched = true;
                     rightDot1.GetComponent<Dot>().isMatched = true;
@@ -310,12 +298,12 @@ public class Dot : MonoBehaviour
         }
         if (row > 0 && row < board.height - 1)
         {
-            GameObject upDot1 = board.allDots[column, row + 1]; // находим элемент сверху 
-            GameObject downDot1 = board.allDots[column, row -1]; // находим элемент снизу
+            GameObject upDot1 = board.allDots[column, row + 1]; //top item
+            GameObject downDot1 = board.allDots[column, row -1]; //bottom item
             if (upDot1 != null && downDot1 != null) 
             {
                 if (upDot1.CompareTag(this.gameObject.tag) && downDot1.CompareTag(this.gameObject.tag))
-                // если элемент сверху и элемент снизу равны основному обьекту то выйгрыш
+                // if item top and item bottom is equal
                 {
                     upDot1.GetComponent<Dot>().isMatched = true;
                     downDot1.GetComponent<Dot>().isMatched = true;
@@ -347,11 +335,11 @@ public class Dot : MonoBehaviour
             if (board.currentDot != null)
             {
                 //Debug.Log("current dot != null");
-                string prefabName = board.currentDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
-                GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
+                string prefabName = board.currentDot.tag + "Row";
+                GameObject prefabBooster = SearchNameForBooster(prefabName); //finded object with tag
                 if (prefabBooster != null)
                 {
-                    GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
+                    GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // object generation
                     arrow.transform.parent = thisDot.transform;
                     isRowBomb = true;
                 }
@@ -359,9 +347,9 @@ public class Dot : MonoBehaviour
             else 
             {
                 //Debug.Log("thisDot Search");
-                string prefabName = thisDot.tag + "Row"; // переменная в которой хранится имя префаба который надо сгенерировать
+                string prefabName = thisDot.tag + "Row";
                 //Debug.Log("thisDot.tag = " + thisDot.tag);
-                GameObject prefabBooster = SearchNameForBooster(prefabName); // найденый обьект с помощью тега
+                GameObject prefabBooster = SearchNameForBooster(prefabName);
                 if (prefabBooster != null)
                 {
                     
@@ -371,7 +359,7 @@ public class Dot : MonoBehaviour
                    // Debug.Log("Dot transform position = " + transform.position);
                     if (isRowBomb == false) 
                     {
-                        GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity); // генерация обьекта
+                        GameObject arrow = Instantiate(prefabBooster, transform.position, Quaternion.identity);
                         //Debug.Log("bomb = " + arrow);
                         arrow.transform.parent = this.transform;
                         isRowBomb = true;

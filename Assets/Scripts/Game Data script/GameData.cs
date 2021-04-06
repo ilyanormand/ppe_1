@@ -22,7 +22,7 @@ public class GameData : MonoBehaviour
     {
         if (gameData == null)
         {
-            DontDestroyOnLoad(this.gameObject); // Для того чтобы обьект не уничтожался при переходах в другую сцену
+            DontDestroyOnLoad(this.gameObject);
             gameData = this;
         }
         else 
@@ -39,31 +39,23 @@ public class GameData : MonoBehaviour
 
     public void Save() 
     {
-        // create a binary formatter which can read binary files
         BinaryFormatter formatter = new BinaryFormatter();
-        // create a route from the programm to the file
         FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Create);
-        // create a copy save data
         SaveData data = new SaveData();
         data = saveData;
-        //Actually save the data into the file in the binary format
         formatter.Serialize(file, data);
-        //close the data stream
         file.Close();
         //Debug.Log(data);
     }
 
     public void load() 
     {
-        // Check if the save game file exist
         if (File.Exists(Application.persistentDataPath + "/player.dat"))
         {
-            // create a binary formatter
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Open);
             saveData = formatter.Deserialize(file) as SaveData;
             file.Close();
-            //Debug.Log("saveData");
         }
         else 
         {

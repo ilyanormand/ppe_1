@@ -21,20 +21,20 @@ public class PauseManager : MonoBehaviour
         sound = FindObjectOfType<SoundManager>();
         board = GameObject.FindWithTag("Board").GetComponent<Board>();
         pausePanel.SetActive(false);
-        if (PlayerPrefs.HasKey("Sound")) // проверяет есть ли ключ sound в найстройках у игрока
+        if (PlayerPrefs.HasKey("Sound")) 
         {
-            if (PlayerPrefs.GetInt("Sound") == 0) // если значение ключа в настройках игрока равно 0 то
+            if (PlayerPrefs.GetInt("Sound") == 0) 
             {
-                soundButton.sprite = musicOffSprite; // меняем картинку включенного звука на выключеный звук
+                soundButton.sprite = musicOffSprite; 
             }
             else
             {
-                soundButton.sprite = musicOnSprite; // меняем картинку выключеного звука на включеный звук
+                soundButton.sprite = musicOnSprite; 
             }
         }
         else 
         {
-            soundButton.sprite = musicOnSprite; // если же не нашел ключ sound то оставляем включенным звук
+            soundButton.sprite = musicOnSprite; 
         }
         
     }
@@ -42,40 +42,40 @@ public class PauseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pausePanel.activeInHierarchy && paused) // если paused = true и панель паузы не активна то 
+        if (!pausePanel.activeInHierarchy && paused) 
         {
-            pausePanel.SetActive(true); // показать панель паузы
-            board.currentState = GameState.pause; // переключить режим игра на режим паузы
+            pausePanel.SetActive(true); 
+            board.currentState = GameState.pause; 
         }
-        if (pausePanel.activeInHierarchy && !paused) // если игра не на паузе и панель паузы активна то
+        if (pausePanel.activeInHierarchy && !paused)
         {
-            pausePanel.SetActive(false); // выключить панель паузы
-            board.currentState = GameState.move; // переключить режим игры на игровой режим
+            pausePanel.SetActive(false);
+            board.currentState = GameState.move; 
         }
     }
 
     public void SoundButton() 
     {
-        if (PlayerPrefs.HasKey("Sound")) // проверяет есть ли ключ sound в найстройках у игрока
+        if (PlayerPrefs.HasKey("Sound")) 
         {
-            if (PlayerPrefs.GetInt("Sound") == 0) // если значение ключа в настройках игрока равно 0 то
+            if (PlayerPrefs.GetInt("Sound") == 0) 
             {
-                PlayerPrefs.SetInt("Sound", 1);// добавляем к нашуме ключу sound значение 1, что означает что звук включен
-                soundButton.sprite = musicOnSprite; // меняем картинку выключеного звука на включеный звук 
-                sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
+                PlayerPrefs.SetInt("Sound", 1);
+                soundButton.sprite = musicOnSprite; 
+                sound.adjustVolume(); 
             }
             else
             {
-                PlayerPrefs.SetInt("Sound", 0); // добавляем к нашуме ключу sound значение 0, что означает что звук выключен
-                soundButton.sprite = musicOffSprite; // меняем картинку включеного звука на выключеный звук
-                sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
+                PlayerPrefs.SetInt("Sound", 0); 
+                soundButton.sprite = musicOffSprite;
+                sound.adjustVolume();
             }
         }
         else
         {
-            soundButton.sprite = musicOnSprite; // если же не нашел ключ sound то оставляем звук выключеным
+            soundButton.sprite = musicOnSprite; 
             PlayerPrefs.SetInt("Sound", 0);
-            sound.adjustVolume(); // вызываем метод по управеление музыкой в фоне
+            sound.adjustVolume();
 
         }
     }

@@ -53,7 +53,8 @@ public class HintManager : MonoBehaviour
     }
 
 
-    //Нужно найти все всевозможные матчи в таблицы
+   
+    // Finding all possible match on board
     List<GameObject> FindAllPossibileMatches()
     {
         if (board.currentState == GameState.move)
@@ -230,7 +231,7 @@ public class HintManager : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    //выбрать случайным образом любой матч из всевозможных
+    //choose randomly any match from all possible
     public List<GameObject> pickOneRandomly() 
     {
         List<GameObject> possibleMoves = new List<GameObject>();
@@ -367,7 +368,4 @@ public class HintManager : MonoBehaviour
         
 
     }
-
-    // создать подсказку
-    // убрать подсказку
 }

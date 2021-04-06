@@ -45,8 +45,6 @@ public class ConfirmPanel : MonoBehaviour
 
     void ActivateStars()
     {
-
-        //Вернуться с.да когда binary file будет готов
         for (int i = 0; i < starsActive; i++)
         {
             //Debug.Log(stars[i]);
